@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Credit Card Application</title>
+    <link rel="stylesheet" href="style.css">
+</head><body>
+    <div class="container">
+        <h1>Business Credit Card Application</h1>
+        <form id="application-form">
+            <!-- Business Information -->
+            <fieldset>
+                <legend>Business Information</legend>
+                <label for="business-name">Full Legal Name of Business</label>
+                <input type="text" id="business-name" name="business-name">
+
+                <label for="business-address">Street Address</label>
+                <input type="text" id="business-address" name="business-address">
+
+                <label for="business-city">City</label>
+                <input type="text" id="business-city" name="business-city">
+
+                <label for="business-state">State</label>
+                <input type="text" id="business-state" name="business-state">
+
+                <label for="business-zip">Zip Code</label>
+                <input type="text" id="business-zip" name="business-zip">
+
+                <label for="business-tin">Tax Identification Number</label>
+                <input type="text" id="business-tin" name="business-tin">
+            </fieldset>
+
+            <!-- Applicant Information -->
+            <fieldset>
+                <legend>Applicant Information</legend>
+                <label for="applicant-name">Full Name</label>
+                <input type="text" id="applicant-name" name="applicant-name">
+
+                <label for="applicant-title">Title</label>
+                <input type="text" id="applicant-title" name="applicant-title">
+
+                <label for="applicant-dob">Date of Birth</label>
+                <input type="date" id="applicant-dob" name="applicant-dob">
+
+                <label for="applicant-ssn">Social Security Number</label>
+                <input type="text" id="applicant-ssn" name="applicant-ssn">
+
+                <label for="applicant-address">Street Address</label>
+                <input type="text" id="applicant-address" name="applicant-address">
+
+                <label for="applicant-city">City</label>
+                <input type="text" id="applicant-city" name="applicant-city">
+
+                <label for="applicant-state">State</label>
+                <input type="text" id="applicant-state" name="applicant-state">
+
+                <label for="applicant-zip">Zip Code</label>
+                <input type="text" id="applicant-zip" name="applicant-zip">
+            </fieldset>
+
+            <!-- Beneficial Owners -->
+            <fieldset>
+                <legend>Beneficial Owner(s) Information</legend>
+                <div id="beneficial-owners">
+                    <!-- Beneficial Owner 1 -->
+                    <div class="beneficial-owner">
+                        <h4>Beneficial Owner 1</h4>
+                        <label for="owner1-name">Full Name</label>
+                        <input type="text" id="owner1-name" name="owner1-name">
+                        <label for="owner1-ownership">% of Ownership</label>
+                        <input type="number" id="owner1-ownership" name="owner1-ownership">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Controlling Person -->
+            <fieldset>
+                <legend>Controlling Person Information</legend>
+                <label for="controller-name">Full Name</label>
+                <input type="text" id="controller-name" name="controller-name">
+                <label for="controller-title">Title in Organization</label>
+                <input type="text" id="controller-title" name="controller-title">
+            </fieldset>
+
+            <div class="buttons">
+                <button type="button" id="prefill-btn">Pre-fill</button>
+                <button type="button" id="clear-btn">Clear Form</button>
+                <button type="submit">Submit Application</button>
+            </div>
+        </form>
+
+        <div class="card-preview">
+            <h3>Business Card Preview</h3>
+            <div class="business-card">
+                <div class="card-business-name">Your Business Name</div>
+                <div class="card-applicant-name">Your Name</div>
+                <div class="card-applicant-title">Your Title</div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
