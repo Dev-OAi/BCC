@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let pdfDoc;
 
     async function loadPdf() {
-        const pdfUrl = 'Business Credit Card application Template.pdf';
+        const pdfUrl = 'business-credit-card-application.pdf';
         const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
         pdfDoc = await PDFDocument.load(existingPdfBytes);
         renderPdf();
