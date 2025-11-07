@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fillPdfBtn = document.getElementById('fill-pdf-btn');
     const downloadBtn = document.getElementById('download-btn');
     const pdfViewer = document.getElementById('pdf-viewer');
+    const previewPdfBtn = document.getElementById('preview-pdf-btn');
+    const pdfColumn = document.getElementById('pdf-column');
 
     let pdfDoc;
 
@@ -28,10 +30,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const inputs = form.querySelectorAll('input');
         inputs.forEach(input => {
             try {
-                const field = pdfForm.getTextField(input.name);
-                field.setText(input.value);
+                if (input.type === 'checkbox') {
+                    if (input.checked) {
+                        const field = pdfForm.getCheckBox(input.name);
+                        field.check();
+                    }
+                } else {
+                    const field = pdfForm.getTextField(input.name);
+                    field.setText(input.value);
+                }
             } catch (error) {
-                console.warn(`Could not find field: ${input.name}`);
+                console.warn(`Could not find or set field: ${input.name}`);
             }
         });
 
@@ -45,6 +54,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         link.href = URL.createObjectURL(blob);
         link.download = 'filled-application.pdf';
         link.click();
+    });
+
+    previewPdfBtn.addEventListener('click', () => {
+        pdfColumn.classList.toggle('pdf-column-visible');
+    });
+
+    pdfColumn.addEventListener('click', (e) => {
+        if (e.target === pdfColumn) {
+            pdfColumn.classList.remove('pdf-column-visible');
+        }
     });
 
     loadPdf();

@@ -1,116 +1,185 @@
-/* Basic Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #4a90e2;
+    --background-color: #f0f2f5;
+    --card-background-color: #ffffff;
+    --text-color: #333;
+    --label-color: #555;
+    --border-color: #dce1e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --font-family: 'Inter', sans-serif;
+}
+
 body {
-    font-family: sans-serif;
+    font-family: var(--font-family);
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.main-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-.main-container {
+header {
+    background-color: var(--card-background-color);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.content-container {
     display: flex;
     flex: 1;
     overflow: hidden;
 }
 
-.form-column, .pdf-column {
+.form-column {
+    width: 100%;
     padding: 20px;
     overflow-y: auto;
 }
 
-.form-column {
-    width: 40%;
-    background-color: #fff;
-    border-right: 1px solid #ccc;
+.pdf-column {
+    display: none; /* Hidden on mobile by default */
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
 }
 
-.pdf-column {
-    width: 60%;
+.pdf-column-visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #pdf-viewer {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 80%;
     border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Form Styles */
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
 fieldset {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 8px;
+    background-color: var(--card-background-color);
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
 legend {
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    padding: 0 10px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--label-color);
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
+    transition: border-color 0.3s;
 }
 
-small {
-    display: block;
-    margin-top: 5px;
-    color: #666;
+input[type="text"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.checkbox-group label {
+    font-weight: 400;
+    margin-bottom: 0;
 }
 
 .buttons {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: var(--card-background-color);
+    border-top: 1px solid var(--border-color);
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    box-shadow: 0 -2px 5px var(--shadow-color);
 }
 
 button {
-    padding: 10px 15px;
+    padding: 12px 20px;
     border: none;
-    background: #333;
+    background: var(--primary-color);
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    opacity: 0.9;
+    background-color: #357abd;
 }
 
 /* Tooltip Styles */
 .tooltip {
     position: relative;
-    display: inline-block;
+    display: block; /* Changed to block for better layout */
 }
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 200px;
-    background-color: #555;
+    width: 220px;
+    background-color: #333;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px;
+    padding: 8px;
     position: absolute;
     z-index: 1;
     bottom: 125%;
     left: 50%;
-    margin-left: -100px;
+    margin-left: -110px;
     opacity: 0;
     transition: opacity 0.3s;
 }
@@ -120,15 +189,44 @@ button:hover {
     opacity: 1;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
+/* Desktop Styles */
+@media (min-width: 768px) {
     .main-container {
-        flex-direction: column;
+        flex-direction: row;
     }
 
-    .form-column, .pdf-column {
+    .content-container {
+        flex-direction: row;
+    }
+
+    .form-column {
+        width: 45%;
+        border-right: 1px solid var(--border-color);
+    }
+
+    .pdf-column {
+        display: block;
+        width: 55%;
+        position: relative;
+        background-color: transparent;
+    }
+
+    #pdf-viewer {
         width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #ccc;
+        height: 100%;
+        box-shadow: none;
+    }
+
+    .buttons {
+        position: static;
+        box-shadow: none;
+        border-top: none;
+        justify-content: flex-start;
+        gap: 20px;
+        padding: 0;
+    }
+
+    #preview-pdf-btn {
+        display: none; /* Hide preview button on desktop */
     }
 }

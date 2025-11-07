@@ -9,149 +9,590 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="form-column">
+        <header>
             <h1>Business Credit Card Application</h1>
-            <p>Fill out the form below to see the fields populated in the PDF on the right. Educational tooltips are available to guide you.</p>
-            <form id="application-form">
+        </header>
+        <div class="content-container">
+            <div class="form-column">
+                <p>Fill out the form below to see the fields populated in the PDF on the right. Educational tooltips are available to guide you.</p>
+                <form id="application-form">
 
-                <!-- Business Information -->
-                <fieldset>
-                    <legend>Business Information</legend>
-                    <div class="tooltip">
-                        <label for="business-name">Full Legal Name of Business</label>
-                        <input type="text" id="business-name" name="Business Name to appear on card">
-                        <span class="tooltiptext">The full legal name of the business as it appears on formation documents.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="business-tin">Tax Identification Number</label>
-                        <input type="text" id="business-tin" name="Tax Identification Number">
-                        <span class="tooltiptext">Your 9-digit Federal Tax Identification Number.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="business-phone">Business Phone</label>
-                        <input type="text" id="business-phone" name="Business Phone">
-                        <span class="tooltiptext">The primary phone number for the business.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="business-address">Business Street Address</label>
-                        <input type="text" id="business-address" name="Business Address street address">
-                        <span class="tooltiptext">The physical street address of the business.</span>
-                    </div>
-                     <div class="tooltip">
-                        <label for="business-zip">Zip Code</label>
-                        <input type="text" id="business-zip" name="Zip Code">
-                        <span class="tooltiptext">The zip code for the business address.</span>
-                    </div>
-                </fieldset>
+                    <!-- Business Information -->
+                    <fieldset>
+                        <legend>Business Information</legend>
+                        <div class="tooltip">
+                            <label for="credit-line-requested">Credit Line Requested</label>
+                            <input type="text" id="credit-line-requested" name="CREDIT LINE REQUESTED">
+                            <span class="tooltiptext">Enter the desired credit line, between $5,000 and $100,000.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-name">Full Legal Name of Business</label>
+                            <input type="text" id="business-name" name="Business Name to appear on card">
+                            <span class="tooltiptext">The full legal name of the business as it appears on formation documents.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-tin">Tax Identification Number</label>
+                            <input type="text" id="business-tin" name="Tax Identification Number">
+                            <span class="tooltiptext">Your 9-digit Federal Tax Identification Number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="type-of-business">Type of Business</label>
+                            <input type="text" id="type-of-business" name="Type of Business">
+                            <span class="tooltiptext">e.g., Corporation, Partnership, Sole Proprietorship.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-address">Business Street Address</label>
+                            <input type="text" id="business-address" name="Business Address street address">
+                            <span class="tooltiptext">The physical street address of the business.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-city">City</label>
+                            <input type="text" id="business-city" name="City">
+                            <span class="tooltiptext">The city for the business address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-state">State</label>
+                            <input type="text" id="business-state" name="State">
+                            <span class="tooltiptext">The state for the business address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-zip">Zip Code</label>
+                            <input type="text" id="business-zip" name="Zip Code">
+                            <span class="tooltiptext">The zip code for the business address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="mailing-address">Mailing Address (if different)</label>
+                            <input type="text" id="mailing-address" name="Mailing Address if different from Business Address">
+                            <span class="tooltiptext">The mailing address for the business, if different from the physical address.</span>
+                        </div>
+                         <div class="tooltip">
+                            <label for="mailing-city">City</label>
+                            <input type="text" id="mailing-city" name="City_2">
+                            <span class="tooltiptext">The city for the mailing address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="mailing-state">State</label>
+                            <input type="text" id="mailing-state" name="State_2">
+                            <span class="tooltiptext">The state for the mailing address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="mailing-zip">Zip Code</label>
+                            <input type="text" id="mailing-zip" name="Zip Code_2">
+                            <span class="tooltiptext">The zip code for the mailing address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="business-phone">Business Phone</label>
+                            <input type="text" id="business-phone" name="Business Phone">
+                            <span class="tooltiptext">The primary phone number for the business.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="primary-banking-relationship">Primary Banking Relationship</label>
+                            <input type="text" id="primary-banking-relationship" name="Primary Banking Relationship">
+                            <span class="tooltiptext">The primary bank the business uses.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="branch-location">Branch Location</label>
+                            <input type="text" id="branch-location" name="Branch Location">
+                            <span class="tooltiptext">The location of the primary bank branch.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="email-address">Email Address</label>
+                            <input type="text" id="email-address" name="Email Address">
+                            <span class="tooltiptext">The business's email address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="date-of-origin">Date of Origin</label>
+                            <input type="text" id="date-of-origin" name="Date of Origin">
+                            <span class="tooltiptext">The date the business was founded.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="years-in-business">Years in Business</label>
+                            <input type="text" id="years-in-business" name="Years in Business">
+                            <span class="tooltiptext">The number of years the business has been in operation.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="gross-annual-revenue">Gross Annual Revenue</label>
+                            <input type="text" id="gross-annual-revenue" name="Gross Annual Revenue">
+                            <span class="tooltiptext">The business's gross annual revenue.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="number-of-employees">Number of Employees</label>
+                            <input type="text" id="number-of-employees" name="Number of Employees">
+                            <span class="tooltiptext">The number of employees in the business.</span>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>Legal Status:</label>
+                            <input type="checkbox" id="sole-proprietorship" name="Sole Proprietorship" value="Yes">
+                            <label for="sole-proprietorship">Sole Proprietorship</label>
+                            <input type="checkbox" id="general-partnership" name="General Partnership" value="Yes">
+                            <label for="general-partnership">General Partnership</label>
+                            <input type="checkbox" id="limited-partnership" name="Limited Partnership" value="Yes">
+                            <label for="limited-partnership">Limited Partnership</label>
+                            <input type="checkbox" id="corporation" name="Corporation" value="Yes">
+                            <label for="corporation">Corporation</label>
+                            <input type="checkbox" id="not-for-profit" name="Not for profit" value="Yes">
+                            <label for="not-for-profit">Not for profit</label>
+                            <input type="checkbox" id="llc" name="LLC" value="Yes">
+                            <label for="llc">LLC</label>
+                            <input type="checkbox" id="other" name="Other" value="Yes">
+                            <label for="other">Other</label>
+                        </div>
+                    </fieldset>
 
-                <!-- Applicant Information -->
-                <fieldset>
-                    <legend>Primary Applicant Information</legend>
-                    <div class="tooltip">
-                        <label for="applicant-name">Full Name</label>
-                        <input type="text" id="applicant-name" name="Name on Card first last">
-                        <span class="tooltiptext">The full legal name of the primary applicant.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="applicant-title">Title</label>
-                        <input type="text" id="applicant-title" name="Title if any">
-                        <span class="tooltiptext">The applicant's official title within the business.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="applicant-dob">Date of Birth</label>
-                        <input type="text" id="applicant-dob" name="Date of Birth">
-                        <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="applicant-ssn">Social Security Number/ITIN</label>
-                        <input type="text" id="applicant-ssn" name="Social Security NumberITIN">
-                        <span class="tooltiptext">The applicant's Social Security Number or Individual Taxpayer Identification Number.</span>
-                    </div>
-                </fieldset>
+                    <!-- Applicant Information -->
+                    <fieldset>
+                        <legend>Primary Applicant Information</legend>
+                        <div class="tooltip">
+                            <label for="applicant-name">Full Name</label>
+                            <input type="text" id="applicant-name" name="Name on Card first last">
+                            <span class="tooltiptext">The full legal name of the primary applicant.</span>
+                        </div>
+                         <div class="checkbox-group">
+                            <label>Role in Company:</label>
+                            <input type="checkbox" id="gm" name="GM" value="Yes">
+                            <label for="gm">GM</label>
+                            <input type="checkbox" id="owner" name="Owner" value="Yes">
+                            <label for="owner">Owner</label>
+                            <input type="checkbox" id="partner" name="Partner" value="Yes">
+                            <label for="partner">Partner</label>
+                            <input type="checkbox" id="president" name="President" value="Yes">
+                            <label for="president">President</label>
+                            <input type="checkbox" id="treasurer" name="Treasurer" value="Yes">
+                            <label for="treasurer">Treasurer</label>
+                            <input type="checkbox" id="vp" name="VP" value="Yes">
+                            <label for="vp">Vice President</label>
+                            <input type="checkbox" id="other-auth-officer" name="Other Authorizing Officer" value="Yes">
+                            <label for="other-auth-officer">Other Authorizing Officer</label>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-title">Title</label>
+                            <input type="text" id="applicant-title" name="Title if any">
+                            <span class="tooltiptext">The applicant's official title within the business.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-ownership">% of Ownership</label>
+                            <input type="text" id="applicant-ownership" name="Of Ownership">
+                            <span class="tooltiptext">Enter the percentage of ownership.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-annual-income">Annual Income</label>
+                            <input type="text" id="applicant-annual-income" name="Annual Income">
+                            <span class="tooltiptext">The applicant's annual income.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-ssn">Social Security Number/ITIN</label>
+                            <input type="text" id="applicant-ssn" name="Social Security NumberITIN">
+                            <span class="tooltiptext">The applicant's Social Security Number or Individual Taxpayer Identification Number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-home-address">Home Address</label>
+                            <input type="text" id="applicant-home-address" name="Home Address street address">
+                            <span class="tooltiptext">The applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-city">City</label>
+                            <input type="text" id="applicant-city" name="City_3">
+                            <span class="tooltiptext">The city for the applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-state">State</label>
+                            <input type="text" id="applicant-state" name="State_3">
+                            <span class="tooltiptext">The state for the applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-zip">Zip Code</label>
+                            <input type="text" id="applicant-zip" name="Zip_3">
+                            <span class="tooltiptext">The zip code for the applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-dob">Date of Birth</label>
+                            <input type="text" id="applicant-dob" name="Date of Birth">
+                            <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-home-phone">Home Phone</label>
+                            <input type="text" id="applicant-home-phone" name="Home Phone">
+                            <span class="tooltiptext">The applicant's home phone number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-business-email">Business Email Address</label>
+                            <input type="text" id="applicant-business-email" name="Business Email Address">
+                            <span class="tooltiptext">The applicant's business email address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant-mothers-maiden-name">Mother's Maiden Name</label>
+                            <input type="text" id="applicant-mothers-maiden-name" name="Mothers Maiden Name">
+                            <span class="tooltiptext">The applicant's mother's maiden name.</span>
+                        </div>
+                    </fieldset>
 
-                <!-- Beneficial Owner 1 -->
-                <fieldset>
-                    <legend>Beneficial Owner 1</legend>
-                    <div class="tooltip">
-                        <label for="owner1-name">Individual Name</label>
-                        <input type="text" id="owner1-name" name="Individual Name">
-                        <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="owner1-ownership">% of Ownership</label>
-                        <input type="text" id="owner1-ownership" name="of ownership">
-                        <span class="tooltiptext">Enter the percentage of ownership.</span>
-                    </div>
-                </fieldset>
+                    <!-- Second Applicant Information -->
+                    <fieldset>
+                        <legend>Second Applicant Information</legend>
+                        <div class="tooltip">
+                            <label for="applicant2-name">Full Name</label>
+                            <input type="text" id="applicant2-name" name="Name on Card first last_2">
+                            <span class="tooltiptext">The full legal name of the second applicant.</span>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>Role in Company:</label>
+                            <input type="checkbox" id="gm2" name="Check Box4" value="Yes">
+                            <label for="gm2">GM</label>
+                            <!-- These checkboxes need unique names if they map to different fields in the PDF -->
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-title">Title</label>
+                            <input type="text" id="applicant2-title" name="Title if any_2">
+                            <span class="tooltiptext">The applicant's official title within the business.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-ownership">% of Ownership</label>
+                            <input type="text" id="applicant2-ownership" name="Of Ownership_2">
+                            <span class="tooltiptext">Enter the percentage of ownership.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-annual-income">Annual Income</label>
+                            <input type="text" id="applicant2-annual-income" name="Annual Income_2">
+                            <span class="tooltiptext">The applicant's annual income.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-ssn">Social Security Number/ITIN</label>
+                            <input type="text" id="applicant2-ssn" name="Social Security NumberITIN_2">
+                            <span class="tooltiptext">The applicant's Social Security Number or Individual Taxpayer Identification Number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-home-address">Home Address</label>
+                            <input type="text" id="applicant2-home-address" name="Home Address street address_2">
+                            <span class="tooltiptext">The applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-city">City</label>
+                            <input type="text" id="applicant2-city" name="City_4">
+                            <span class="tooltiptext">The city for the applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-state">State</label>
+                            <input type="text" id="applicant2-state" name="State_4">
+                            <span class="tooltiptext">The state for the applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-zip">Zip Code</label>
+                            <input type="text" id="applicant2-zip" name="Zip_2">
+                            <span class="tooltiptext">The zip code for the applicant's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-dob">Date of Birth</label>
+                            <input type="text" id="applicant2-dob" name="Date of Birth_2">
+                            <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-home-phone">Home Phone</label>
+                            <input type="text" id="applicant2-home-phone" name="Home Phone_2">
+                            <span class="tooltiptext">The applicant's home phone number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-business-email">Business Email Address</label>
+                            <input type="text" id="applicant2-business-email" name="Business Email Address_2">
+                            <span class="tooltiptext">The applicant's business email address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="applicant2-mothers-maiden-name">Mother's Maiden Name</label>
+                            <input type="text" id="applicant2-mothers-maiden-name" name="Mothers Maiden Name_2">
+                            <span class="tooltiptext">The applicant's mother's maiden name.</span>
+                        </div>
+                    </fieldset>
 
-                <!-- Beneficial Owner 2 -->
-                <fieldset>
-                    <legend>Beneficial Owner 2</legend>
-                    <div class="tooltip">
-                        <label for="owner2-name">Individual Name</label>
-                        <input type="text" id="owner2-name" name="Individual Name_2">
-                        <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="owner2-ownership">% of Ownership</label>
-                        <input type="text" id="owner2-ownership" name="of ownership_2">
-                        <span class="tooltiptext">Enter the percentage of ownership.</span>
-                    </div>
-                </fieldset>
 
-                <!-- Beneficial Owner 3 -->
-                <fieldset>
-                    <legend>Beneficial Owner 3</legend>
-                    <div class="tooltip">
-                        <label for="owner3-name">Individual Name</label>
-                        <input type="text" id="owner3-name" name="Individual Name_3">
-                        <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="owner3-ownership">% of Ownership</label>
-                        <input type="text" id="owner3-ownership" name="of ownership_3">
-                        <span class="tooltiptext">Enter the percentage of ownership.</span>
-                    </div>
-                </fieldset>
+                    <!-- Authorized Cardholders -->
+                    <fieldset>
+                        <legend>Authorized Cardholder 1</legend>
+                        <div class="tooltip">
+                            <label for="cardholder1-name">Name to Appear on Card</label>
+                            <input type="text" id="cardholder1-name" name="Name to Appear on Card first last">
+                            <span class="tooltiptext">Full name of the authorized cardholder.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-ssn">Social Security Number</label>
+                            <input type="text" id="cardholder1-ssn" name="Social Security Number">
+                            <span class="tooltiptext">The cardholder's Social Security Number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-home-address">Home Address</label>
+                            <input type="text" id="cardholder1-home-address" name="Home Address street address_3">
+                            <span class="tooltiptext">The cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-city">City</label>
+                            <input type="text" id="cardholder1-city" name="City_5">
+                            <span class="tooltiptext">The city for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-state">State</label>
+                            <input type="text" id="cardholder1-state" name="State_5">
+                            <span class="tooltiptext">The state for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-zip">Zip Code</label>
+                            <input type="text" id="cardholder1-zip" name="Zip_3">
+                            <span class="tooltiptext">The zip code for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-dob">Date of Birth</label>
+                            <input type="text" id="cardholder1-dob" name="Date of Birth_3">
+                            <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
+                        </div>
+                         <div class="tooltip">
+                            <label for="cardholder1-mothers-maiden-name">Mother's Maiden Name</label>
+                            <input type="text" id="cardholder1-mothers-maiden-name" name="Mothers Maiden Name_3">
+                            <span class="tooltiptext">The cardholder's mother's maiden name.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder1-business-email">Business Email Address</label>
+                            <input type="text" id="cardholder1-business-email" name="Business Email Address_3">
+                            <span class="tooltiptext">The cardholder's business email address.</span>
+                        </div>
+                    </fieldset>
 
-                <!-- Beneficial Owner 4 -->
-                <fieldset>
-                    <legend>Beneficial Owner 4</legend>
-                    <div class="tooltip">
-                        <label for="owner4-name">Individual Name</label>
-                        <input type="text" id="owner4-name" name="Individual Name_4">
-                        <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="owner4-ownership">% of Ownership</label>
-                        <input type="text" id="owner4-ownership" name="of ownership_4">
-                        <span class="tooltiptext">Enter the percentage of ownership.</span>
-                    </div>
-                </fieldset>
+                    <fieldset>
+                        <legend>Authorized Cardholder 2</legend>
+                        <div class="tooltip">
+                            <label for="cardholder2-name">Name to Appear on Card</label>
+                            <input type="text" id="cardholder2-name" name="Name to Appear on Card first last_2">
+                            <span class="tooltiptext">Full name of the authorized cardholder.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-ssn">Social Security Number</label>
+                            <input type="text" id="cardholder2-ssn" name="Social Security Number_2">
+                            <span class="tooltiptext">The cardholder's Social Security Number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-home-address">Home Address</label>
+                            <input type="text" id="cardholder2-home-address" name="Home Address street address_4">
+                            <span class="tooltiptext">The cardholder's home address.</span>
+                        </div>
+                         <div class="tooltip">
+                            <label for="cardholder2-city">City</label>
+                            <input type="text" id="cardholder2-city" name="City_6">
+                            <span class="tooltiptext">The city for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-state">State</label>
+                            <input type="text" id="cardholder2-state" name="State_6">
+                            <span class="tooltiptext">The state for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-zip">Zip Code</label>
+                            <input type="text" id="cardholder2-zip" name="Zip_4">
+                            <span class="tooltiptext">The zip code for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-dob">Date of Birth</label>
+                            <input type="text" id="cardholder2-dob" name="Date of Birth_4">
+                            <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-mothers-maiden-name">Mother's Maiden Name</label>
+                            <input type="text" id="cardholder2-mothers-maiden-name" name="Mothers Maiden Name_4">
+                            <span class="tooltiptext">The cardholder's mother's maiden name.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder2-business-email">Business Email Address</label>
+                            <input type="text" id="cardholder2-business-email" name="Business Email Address_4">
+                            <span class="tooltiptext">The cardholder's business email address.</span>
+                        </div>
+                    </fieldset>
 
-                <!-- Controlling Person -->
-                <fieldset>
-                    <legend>Controlling Person Information</legend>
-                    <div class="tooltip">
-                        <label for="controller-name">Individual Name</label>
-                        <input type="text" id="controller-name" name="Individual Name_5">
-                        <span class="tooltiptext">An individual with significant responsibility for managing the legal entity (e.g., CEO, CFO, President).</span>
-                    </div>
-                    <div class="tooltip">
-                        <label for="controller-title">Title in Organization</label>
-                        <input type="text" id="controller-title" name="Title in Organization">
-                        <span class="tooltiptext">The official title of the controlling person.</span>
-                    </div>
-                </fieldset>
+                    <fieldset>
+                        <legend>Authorized Cardholder 3</legend>
+                        <div class="tooltip">
+                            <label for="cardholder3-name">Name to Appear on Card</label>
+                            <input type="text" id="cardholder3-name" name="Name to Appear on Card first last_3">
+                            <span class="tooltiptext">Full name of the authorized cardholder.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder3-ssn">Social Security Number</label>
+                            <input type="text" id="cardholder3-ssn" name="Social Security Number_3">
+                            <span class="tooltiptext">The cardholder's Social Security Number.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder3-home-address">Home Address</label>
+                            <input type="text" id="cardholder3-home-address" name="Home Address street address_5">
+                            <span class="tooltiptext">The cardholder's home address.</span>
+                        </div>
+                         <div class="tooltip">
+                            <label for="cardholder3-city">City</label>
+                            <input type="text" id="cardholder3-city" name="City_7">
+                            <span class="tooltiptext">The city for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder3-state">State</label>
+                            <input type="text" id="cardholder3-state" name="State_7">
+                            <span class="tooltiptext">The state for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder3-zip">Zip Code</label>
+                            <input type="text" id="cardholder3-zip" name="Zip_5">
+                            <span class="tooltiptext">The zip code for the cardholder's home address.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder3-dob">Date of Birth</label>
+                            <input type="text" id="cardholder3-dob" name="Date of Birth_5">
+                            <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
+                        </div>
+                         <div class="tooltip">
+                            <label for="cardholder3-mothers-maiden-name">Mother's Maiden Name</label>
+                            <input type="text" id="cardholder3-mothers-maiden-name" name="Mothers Maiden Name_5">
+                            <span class="tooltiptext">The cardholder's mother's maiden name.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="cardholder3-business-email">Business Email Address</label>
+                            <input type="text" id="cardholder3-business-email" name="Business Email Address_5">
+                            <span class="tooltiptext">The cardholder's business email address.</span>
+                        </div>
+                    </fieldset>
 
-                <div class="buttons">
-                    <button type="button" id="fill-pdf-btn">Fill PDF</button>
-                    <button type="button" id="download-btn">Download PDF</button>
-                </div>
-            </form>
-        </div>
-        <div class="pdf-column">
-            <iframe id="pdf-viewer" frameborder="0"></iframe>
+
+                    <!-- Balance Transfers -->
+                    <fieldset>
+                        <legend>Balance Transfers</legend>
+                        <div class="tooltip">
+                            <label for="creditor1-name">Name of Creditor</label>
+                            <input type="text" id="creditor1-name" name="Name of Creditor">
+                            <span class="tooltiptext">Name of the creditor for the first balance transfer.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="creditor1-account-number">Account Number</label>
+                            <input type="text" id="creditor1-account-number" name="Account Number from Credit Card">
+                            <span class="tooltiptext">Account number for the first balance transfer.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="creditor1-remittance-address">Remittance Address</label>
+                            <input type="text" id="creditor1-remittance-address" name="Remittance Address">
+                            <span class="tooltiptext">Remittance address for the first balance transfer.</span>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="tooltip">
+                            <label for="creditor2-name">Name of Creditor</label>
+                            <input type="text" id="creditor2-name" name="Name of Creditor_2">
+                            <span class="tooltiptext">Name of the creditor for the second balance transfer.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="creditor2-account-number">Account Number</label>
+                            <input type="text" id="creditor2-account-number" name="Account Number from Credit Card_2">
+                            <span class="tooltiptext">Account number for the second balance transfer.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="creditor2-remittance-address">Remittance Address</label>
+                            <input type="text" id="creditor2-remittance-address" name="Remittance Address_2">
+                            <span class="tooltiptext">Remittance address for the second balance transfer.</span>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="tooltip">
+                            <label for="creditor3-name">Name of Creditor</label>
+                            <input type="text" id="creditor3-name" name="Name of Creditor_3">
+                            <span class="tooltiptext">Name of the creditor for the third balance transfer.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="creditor3-account-number">Account Number</label>
+                            <input type="text" id="creditor3-account-number" name="Account Number from Credit Card_3">
+                            <span class="tooltiptext">Account number for the third balance transfer.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="creditor3-remittance-address">Remittance Address</label>
+                            <input type="text" id="creditor3-remittance-address" name="Remittance Address_3">
+                            <span class="tooltiptext">Remittance address for the third balance transfer.</span>
+                        </div>
+                    </fieldset>
+
+                    <!-- Beneficial Owner 1 -->
+                    <fieldset>
+                        <legend>Beneficial Owner 1</legend>
+                        <div class="tooltip">
+                            <label for="owner1-name">Individual Name</label>
+                            <input type="text" id="owner1-name" name="Individual Name">
+                            <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="owner1-ownership">% of Ownership</label>
+                            <input type="text" id="owner1-ownership" name="of ownership">
+                            <span class="tooltiptext">Enter the percentage of ownership.</span>
+                        </div>
+                    </fieldset>
+
+                    <!-- Beneficial Owner 2 -->
+                    <fieldset>
+                        <legend>Beneficial Owner 2</legend>
+                        <div class="tooltip">
+                            <label for="owner2-name">Individual Name</label>
+                            <input type="text" id="owner2-name" name="Individual Name_2">
+                            <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="owner2-ownership">% of Ownership</label>
+                            <input type="text" id="owner2-ownership" name="of ownership_2">
+                            <span class="tooltiptext">Enter the percentage of ownership.</span>
+                        </div>
+                    </fieldset>
+
+                    <!-- Beneficial Owner 3 -->
+                    <fieldset>
+                        <legend>Beneficial Owner 3</legend>
+                        <div class="tooltip">
+                            <label for="owner3-name">Individual Name</label>
+                            <input type="text" id="owner3-name" name="Individual Name_3">
+                            <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="owner3-ownership">% of Ownership</label>
+                            <input type="text" id="owner3-ownership" name="of ownership_3">
+                            <span class="tooltiptext">Enter the percentage of ownership.</span>
+                        </div>
+                    </fieldset>
+
+                    <!-- Beneficial Owner 4 -->
+                    <fieldset>
+                        <legend>Beneficial Owner 4</legend>
+                        <div class="tooltip">
+                            <label for="owner4-name">Individual Name</label>
+                            <input type="text" id="owner4-name" name="Individual Name_4">
+                            <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="owner4-ownership">% of Ownership</label>
+                            <input type="text" id="owner4-ownership" name="of ownership_4">
+                            <span class="tooltiptext">Enter the percentage of ownership.</span>
+                        </div>
+                    </fieldset>
+
+                    <!-- Controlling Person -->
+                    <fieldset>
+                        <legend>Controlling Person Information</legend>
+                        <div class="tooltip">
+                            <label for="controller-name">Individual Name</label>
+                            <input type="text" id="controller-name" name="Individual Name_5">
+                            <span class="tooltiptext">An individual with significant responsibility for managing the legal entity (e.g., CEO, CFO, President).</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="controller-title">Title in Organization</label>
+                            <input type="text" id="controller-title" name="Title in Organization">
+                            <span class="tooltiptext">The official title of the controlling person.</span>
+                        </div>
+                    </fieldset>
+
+                    <div class="buttons">
+                        <button type="button" id="fill-pdf-btn">Fill PDF</button>
+                        <button type="button" id="preview-pdf-btn">Preview PDF</button>
+                        <button type="button" id="download-btn">Download PDF</button>
+                    </div>
+                </form>
+            </div>
+            <div class="pdf-column" id="pdf-column">
+                <iframe id="pdf-viewer" frameborder="0"></iframe>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
