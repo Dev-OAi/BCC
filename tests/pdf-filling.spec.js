@@ -14,8 +14,14 @@ test.describe('PDF Filling Test', () => {
     await page.fill('#applicant-title', 'CEO');
     await page.fill('#applicant-dob', '01/01/1980');
     await page.fill('#applicant-ssn', '123-45-6789');
-    await page.fill('#owner1-name', 'Complete Test Owner');
-    await page.fill('#owner1-ownership', '51');
+    await page.fill('#owner1-name', 'Complete Test Owner 1');
+    await page.fill('#owner1-ownership', '25');
+    await page.fill('#owner2-name', 'Complete Test Owner 2');
+    await page.fill('#owner2-ownership', '25');
+    await page.fill('#owner3-name', 'Complete Test Owner 3');
+    await page.fill('#owner3-ownership', '25');
+    await page.fill('#owner4-name', 'Complete Test Owner 4');
+    await page.fill('#owner4-ownership', '25');
     await page.fill('#controller-name', 'Complete Test Controller');
     await page.fill('#controller-title', 'President');
 
