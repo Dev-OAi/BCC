@@ -17,8 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function renderPdf() {
         const pdfBytes = await pdfDoc.save();
-        const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
-        pdfViewer.src = pdfDataUri;
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        pdfViewer.src = url;
     }
 
     fillPdfBtn.addEventListener('click', async () => {

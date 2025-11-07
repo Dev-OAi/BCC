@@ -2,11 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('PDF Filling Test', () => {
   test('should fill the PDF with the complete form data', async ({ page }) => {
-    // Start a local server to serve the app directory
-    const serverProcess = require('child_process').spawn('python3', ['-m', 'http.server', '8002', '--directory', 'app']);
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for server to start
-
-    await page.goto('http://localhost:8002');
+    await page.goto(`file://${__dirname}/../app/index.html`);
 
     // Fill out the entire form
     await page.fill('#business-name', 'Complete Test Business');
@@ -30,8 +26,5 @@ test.describe('PDF Filling Test', () => {
     await page.waitForTimeout(2000);
 
     await expect(page).toHaveScreenshot('complete-filled-pdf.png');
-
-    // Stop the server
-    serverProcess.kill();
   });
 });
