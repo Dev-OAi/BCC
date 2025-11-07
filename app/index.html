@@ -5,98 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Credit Card Application</title>
     <link rel="stylesheet" href="style.css">
-</head><body>
-    <div class="container">
-        <h1>Business Credit Card Application</h1>
-        <form id="application-form">
-            <!-- Business Information -->
-            <fieldset>
-                <legend>Business Information</legend>
-                <label for="business-name">Full Legal Name of Business</label>
-                <input type="text" id="business-name" name="business-name">
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="form-column">
+            <h1>Business Credit Card Application</h1>
+            <p>Fill out the form below to see the fields populated in the PDF on the right. Educational tooltips are available to guide you.</p>
+            <form id="application-form">
 
-                <label for="business-address">Street Address</label>
-                <input type="text" id="business-address" name="business-address">
-
-                <label for="business-city">City</label>
-                <input type="text" id="business-city" name="business-city">
-
-                <label for="business-state">State</label>
-                <input type="text" id="business-state" name="business-state">
-
-                <label for="business-zip">Zip Code</label>
-                <input type="text" id="business-zip" name="business-zip">
-
-                <label for="business-tin">Tax Identification Number</label>
-                <input type="text" id="business-tin" name="business-tin">
-            </fieldset>
-
-            <!-- Applicant Information -->
-            <fieldset>
-                <legend>Applicant Information</legend>
-                <label for="applicant-name">Full Name</label>
-                <input type="text" id="applicant-name" name="applicant-name">
-
-                <label for="applicant-title">Title</label>
-                <input type="text" id="applicant-title" name="applicant-title">
-
-                <label for="applicant-dob">Date of Birth</label>
-                <input type="date" id="applicant-dob" name="applicant-dob">
-
-                <label for="applicant-ssn">Social Security Number</label>
-                <input type="text" id="applicant-ssn" name="applicant-ssn">
-
-                <label for="applicant-address">Street Address</label>
-                <input type="text" id="applicant-address" name="applicant-address">
-
-                <label for="applicant-city">City</label>
-                <input type="text" id="applicant-city" name="applicant-city">
-
-                <label for="applicant-state">State</label>
-                <input type="text" id="applicant-state" name="applicant-state">
-
-                <label for="applicant-zip">Zip Code</label>
-                <input type="text" id="applicant-zip" name="applicant-zip">
-            </fieldset>
-
-            <!-- Beneficial Owners -->
-            <fieldset>
-                <legend>Beneficial Owner(s) Information</legend>
-                <div id="beneficial-owners">
-                    <!-- Beneficial Owner 1 -->
-                    <div class="beneficial-owner">
-                        <h4>Beneficial Owner 1</h4>
-                        <label for="owner1-name">Full Name</label>
-                        <input type="text" id="owner1-name" name="owner1-name">
-                        <label for="owner1-ownership">% of Ownership</label>
-                        <input type="number" id="owner1-ownership" name="owner1-ownership">
+                <!-- Business Information -->
+                <fieldset>
+                    <legend>Business Information</legend>
+                    <div class="tooltip">
+                        <label for="business-name">Full Legal Name of Business</label>
+                        <input type="text" id="business-name" name="Business Name to appear on card">
+                        <span class="tooltiptext">The full legal name of the business as it appears on formation documents.</span>
                     </div>
+                    <div class="tooltip">
+                        <label for="business-tin">Tax Identification Number</label>
+                        <input type="text" id="business-tin" name="Tax Identification Number">
+                        <span class="tooltiptext">Your 9-digit Federal Tax Identification Number.</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="business-phone">Business Phone</label>
+                        <input type="text" id="business-phone" name="Business Phone">
+                        <span class="tooltiptext">The primary phone number for the business.</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="business-address">Business Street Address</label>
+                        <input type="text" id="business-address" name="Business Address street address">
+                        <span class="tooltiptext">The physical street address of the business.</span>
+                    </div>
+                     <div class="tooltip">
+                        <label for="business-zip">Zip Code</label>
+                        <input type="text" id="business-zip" name="Zip Code">
+                        <span class="tooltiptext">The zip code for the business address.</span>
+                    </div>
+                </fieldset>
+
+                <!-- Applicant Information -->
+                <fieldset>
+                    <legend>Primary Applicant Information</legend>
+                    <div class="tooltip">
+                        <label for="applicant-name">Full Name</label>
+                        <input type="text" id="applicant-name" name="Name on Card first last">
+                        <span class="tooltiptext">The full legal name of the primary applicant.</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="applicant-title">Title</label>
+                        <input type="text" id="applicant-title" name="Title if any">
+                        <span class="tooltiptext">The applicant's official title within the business.</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="applicant-dob">Date of Birth</label>
+                        <input type="text" id="applicant-dob" name="Date of Birth">
+                        <span class="tooltiptext">Enter as MM/DD/YYYY.</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="applicant-ssn">Social Security Number/ITIN</label>
+                        <input type="text" id="applicant-ssn" name="Social Security NumberITIN">
+                        <span class="tooltiptext">The applicant's Social Security Number or Individual Taxpayer Identification Number.</span>
+                    </div>
+                </fieldset>
+
+                <!-- Beneficial Owner 1 -->
+                <fieldset>
+                    <legend>Beneficial Owner 1</legend>
+                    <div class="tooltip">
+                        <label for="owner1-name">Individual Name</label>
+                        <input type="text" id="owner1-name" name="Individual Name">
+                        <span class="tooltiptext">Name of an individual who owns 25% or more of the equity interests.</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="owner1-ownership">% of Ownership</label>
+                        <input type="text" id="owner1-ownership" name="of ownership">
+                        <span class="tooltiptext">Enter the percentage of ownership.</span>
+                    </div>
+                </fieldset>
+
+                <!-- Controlling Person -->
+                <fieldset>
+                    <legend>Controlling Person Information</legend>
+                    <div class="tooltip">
+                        <label for="controller-name">Individual Name</label>
+                        <input type="text" id="controller-name" name="Individual Name_5">
+                        <span class="tooltiptext">An individual with significant responsibility for managing the legal entity (e.g., CEO, CFO, President).</span>
+                    </div>
+                    <div class="tooltip">
+                        <label for="controller-title">Title in Organization</label>
+                        <input type="text" id="controller-title" name="Title in Organization">
+                        <span class="tooltiptext">The official title of the controlling person.</span>
+                    </div>
+                </fieldset>
+
+                <div class="buttons">
+                    <button type="button" id="fill-pdf-btn">Fill PDF</button>
+                    <button type="button" id="download-btn">Download PDF</button>
                 </div>
-            </fieldset>
-
-            <!-- Controlling Person -->
-            <fieldset>
-                <legend>Controlling Person Information</legend>
-                <label for="controller-name">Full Name</label>
-                <input type="text" id="controller-name" name="controller-name">
-                <label for="controller-title">Title in Organization</label>
-                <input type="text" id="controller-title" name="controller-title">
-            </fieldset>
-
-            <div class="buttons">
-                <button type="button" id="prefill-btn">Pre-fill</button>
-                <button type="button" id="clear-btn">Clear Form</button>
-                <button type="submit">Submit Application</button>
-            </div>
-        </form>
-
-        <div class="card-preview">
-            <h3>Business Card Preview</h3>
-            <div class="business-card">
-                <div class="card-business-name">Your Business Name</div>
-                <div class="card-applicant-name">Your Name</div>
-                <div class="card-applicant-title">Your Title</div>
-            </div>
+            </form>
+        </div>
+        <div class="pdf-column">
+            <iframe id="pdf-viewer" frameborder="0"></iframe>
         </div>
     </div>
     <script src="script.js"></script>

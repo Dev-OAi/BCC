@@ -1,64 +1,50 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const { PDFDocument } = PDFLib;
+
     const form = document.getElementById('application-form');
-    const prefillBtn = document.getElementById('prefill-btn');
-    const clearBtn = document.getElementById('clear-btn');
+    const fillPdfBtn = document.getElementById('fill-pdf-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const pdfViewer = document.getElementById('pdf-viewer');
 
-    const sampleData = {
-        'business-name': 'ABC Corporation',
-        'business-address': '123 Main St',
-        'business-city': 'Anytown',
-        'business-state': 'CA',
-        'business-zip': '12345',
-        'business-tin': '12-3456789',
-        'applicant-name': 'John Doe',
-        'applicant-title': 'CEO',
-        'applicant-dob': '1980-01-01',
-        'applicant-ssn': '123-45-678',
-        'applicant-address': '456 Oak Ave',
-        'applicant-city': 'Someville',
-        'applicant-state': 'CA',
-        'applicant-zip': '54321',
-        'owner1-name': 'Jane Smith',
-        'owner1-ownership': '50',
-        'controller-name': 'John Doe',
-        'controller-title': 'CEO'
-    };
+    let pdfDoc;
 
-    prefillBtn.addEventListener('click', () => {
-        for (const key in sampleData) {
-            if (Object.hasOwnProperty.call(sampleData, key)) {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.value = sampleData[key];
-                }
-            }
-        }
-    });
-
-    clearBtn.addEventListener('click', () => {
-        form.reset();
-        updateCardPreview();
-    });
-
-    // Live Preview
-    const businessNameInput = document.getElementById('business-name');
-    const applicantNameInput = document.getElementById('applicant-name');
-    const applicantTitleInput = document.getElementById('applicant-title');
-
-    const cardBusinessName = document.querySelector('.card-business-name');
-    const cardApplicantName = document.querySelector('.card-applicant-name');
-    const cardApplicantTitle = document.querySelector('.card-applicant-title');
-
-    function updateCardPreview() {
-        cardBusinessName.textContent = businessNameInput.value || 'Your Business Name';
-        cardApplicantName.textContent = applicantNameInput.value || 'Your Name';
-        cardApplicantTitle.textContent = applicantTitleInput.value || 'Your Title';
+    async function loadPdf() {
+        const pdfUrl = 'Business Credit Card application Template.pdf';
+        const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
+        pdfDoc = await PDFDocument.load(existingPdfBytes);
+        renderPdf();
     }
 
-    businessNameInput.addEventListener('input', updateCardPreview);
-    applicantNameInput.addEventListener('input', updateCardPreview);
-    applicantTitleInput.addEventListener('input', updateCardPreview);
+    async function renderPdf() {
+        const pdfBytes = await pdfDoc.save();
+        const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
+        pdfViewer.src = pdfDataUri;
+    }
 
-    // Initial update
-    updateCardPreview();
+    fillPdfBtn.addEventListener('click', async () => {
+        const pdfForm = pdfDoc.getForm();
+
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            try {
+                const field = pdfForm.getTextField(input.name);
+                field.setText(input.value);
+            } catch (error) {
+                console.warn(`Could not find field: ${input.name}`);
+            }
+        });
+
+        renderPdf();
+    });
+
+    downloadBtn.addEventListener('click', async () => {
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'filled-application.pdf';
+        link.click();
+    });
+
+    loadPdf();
 });
