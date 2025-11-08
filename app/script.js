@@ -33,6 +33,19 @@ const initializeApp = async () => {
   const pdfPreview = document.getElementById('pdf-preview');
   const dynamicForm = document.getElementById('dynamic-form');
 
+  // Share and Resume Modal elements
+  const saveShareBtn = document.getElementById('save-share-btn');
+  const shareModal = document.getElementById('share-modal');
+  const resumeModal = document.getElementById('resume-modal');
+  const closeButton = document.querySelector('.close-button');
+  const generateLinkBtn = document.getElementById('generate-link-btn');
+  const encryptionPassword = document.getElementById('encryption-password');
+  const mailtoLink = document.getElementById('mailto-link');
+  const generatedLinkContainer = document.getElementById('generated-link-container');
+  const decryptionPassword = document.getElementById('decryption-password');
+  const unlockDataBtn = document.getElementById('unlock-data-btn');
+
+
   let pdfDoc, templatePdfDoc;
 
   homeBtn.addEventListener('click', () => {
@@ -138,6 +151,43 @@ const initializeApp = async () => {
   });
 
   backdrop.addEventListener('click', closeSidebars);
+
+  saveShareBtn.addEventListener('click', () => {
+    shareModal.style.display = 'flex';
+  });
+
+  closeButton.addEventListener('click', () => {
+    shareModal.style.display = 'none';
+  });
+
+  generateLinkBtn.addEventListener('click', () => {
+    const password = encryptionPassword.value;
+    if (password.length < 8) {
+      alert('Please use a password of at least 8 characters.');
+      return;
+    }
+
+    const formData = {};
+    const inputs = form.querySelectorAll('input, select');
+    inputs.forEach((input) => {
+      if (input.type === 'checkbox') {
+        formData[input.id] = input.checked;
+      } else {
+        formData[input.id] = input.value;
+      }
+    });
+
+    const jsonString = JSON.stringify(formData);
+    const compressed = pako.deflate(jsonString, { to: 'string' });
+    const encrypted = CryptoJS.AES.encrypt(compressed, password).toString();
+    const base64 = btoa(encrypted);
+
+    const url = new URL(window.location.href);
+    url.hash = base64;
+
+    mailtoLink.href = `mailto:?subject=Saved BCC Application&body=Here is your saved application link: ${url.href}`;
+    generatedLinkContainer.style.display = 'block';
+  });
 
   form.addEventListener('input', (e) => {
     const { name, value } = e.target;
@@ -543,6 +593,44 @@ const initializeApp = async () => {
 
   loadPdf();
   loadSavedData();
+  loadSharedData();
+
+  function loadSharedData() {
+    if (window.location.hash) {
+      resumeModal.style.display = 'flex';
+    }
+
+    unlockDataBtn.addEventListener('click', () => {
+      const password = decryptionPassword.value;
+      if (!password) {
+        alert('Please enter a password.');
+        return;
+      }
+
+      try {
+        const base64 = window.location.hash.substring(1);
+        const encrypted = atob(base64);
+        const decrypted = CryptoJS.AES.decrypt(encrypted, password).toString(CryptoJS.enc.Utf8);
+        const jsonString = pako.inflate(decrypted, { to: 'string' });
+        const formData = JSON.parse(jsonString);
+
+        for (const key in formData) {
+          const input = document.getElementById(key);
+          if (input) {
+            if (input.type === 'checkbox') {
+              input.checked = formData[key];
+            } else {
+              input.value = formData[key];
+            }
+          }
+        }
+        resumeModal.style.display = 'none';
+      } catch (error) {
+        console.error('Decryption failed:', error);
+        alert('Failed to decrypt data. Please check your password and try again.');
+      }
+    });
+  }
 };
 
 if (document.readyState === 'loading') {
