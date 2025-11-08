@@ -5,52 +5,87 @@ const initializeApp = async () => {
     const fillPdfBtn = document.getElementById('fill-pdf-btn');
     const downloadBtn = document.getElementById('download-btn');
     const pdfViewer = document.getElementById('pdf-viewer');
-    const previewPdfBtn = document.getElementById('preview-pdf-btn');
-    const pdfColumn = document.getElementById('pdf-column');
     const resetBtn = document.getElementById('reset-btn');
 
-    // New document scanner elements
+    // Document scanner elements
     const documentType = document.getElementById('document-type');
     const documentUpload = document.getElementById('document-upload');
     const documentPreview = document.getElementById('document-preview');
     const scanDocumentBtn = document.getElementById('scan-document-btn');
+    const scanCameraBtn = document.getElementById('scan-camera-btn');
+
+    // Sidebar elements
+    const leftSidebarToggle = document.getElementById('left-sidebar-toggle');
+    const rightSidebarToggle = document.getElementById('right-sidebar-toggle');
+    const leftSidebar = document.getElementById('left-sidebar');
+    const rightSidebar = document.getElementById('right-sidebar');
+    const backdrop = document.getElementById('backdrop');
 
     let pdfDoc;
 
     async function loadPdf() {
-        const pdfUrl = './business-credit-card-application.pdf';
-        const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
-        pdfDoc = await PDFDocument.load(existingPdfBytes);
-        renderPdf();
+        try {
+            const pdfUrl = './business-credit-card-application.pdf';
+            const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
+            pdfDoc = await PDFDocument.load(existingPdfBytes);
+            renderPdf();
+        } catch (error) {
+            console.error("Failed to load PDF:", error);
+        }
     }
 
     async function renderPdf() {
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        pdfViewer.src = url;
+        try {
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            pdfViewer.src = url;
+        } catch (error) {
+            console.error("Failed to render PDF:", error);
+        }
     }
+
+    function toggleSidebar(sidebar) {
+        const isOpen = sidebar.classList.toggle('open');
+        backdrop.classList.toggle('visible', leftSidebar.classList.contains('open') || rightSidebar.classList.contains('open'));
+    }
+
+    function closeSidebars() {
+        leftSidebar.classList.remove('open');
+        rightSidebar.classList.remove('open');
+        backdrop.classList.remove('visible');
+    }
+
+    leftSidebarToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSidebar(leftSidebar);
+    });
+
+    rightSidebarToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSidebar(rightSidebar);
+    });
+
+    backdrop.addEventListener('click', closeSidebars);
 
     fillPdfBtn.addEventListener('click', async () => {
         const pdfForm = pdfDoc.getForm();
-
-        const inputs = form.querySelectorAll('input');
+        const inputs = form.querySelectorAll('input, select');
         inputs.forEach(input => {
             try {
                 if (input.type === 'checkbox') {
                     if (input.checked) {
-                        const field = pdfForm.getCheckBox(input.name);
-                        field.check();
+                        pdfForm.getCheckBox(input.name).check();
                     }
+                } else if (input.tagName.toLowerCase() === 'select') {
+                    pdfForm.getTextField(input.name).setText(input.value);
                 } else {
-                    const field = pdfForm.getTextField(input.name);
-                    field.setText(input.value);
+                    pdfForm.getTextField(input.name).setText(input.value);
                 }
             } catch (error) {
                 console.warn(`Could not find or set field: ${input.name}`);
             }
         });
-
         renderPdf();
     });
 
@@ -61,36 +96,6 @@ const initializeApp = async () => {
         link.href = URL.createObjectURL(blob);
         link.download = 'filled-application.pdf';
         link.click();
-    });
-
-    previewPdfBtn.addEventListener('click', () => {
-        pdfColumn.classList.toggle('pdf-column-visible');
-    });
-
-    pdfColumn.addEventListener('click', (e) => {
-        if (e.target === pdfColumn) {
-            pdfColumn.classList.remove('pdf-column-visible');
-        }
-    });
-
-    // Sidebar Toggles
-    const leftSidebarToggle = document.getElementById('left-sidebar-toggle');
-    const rightSidebarToggle = document.getElementById('right-sidebar-toggle');
-    const leftSidebar = document.getElementById('left-sidebar');
-    const rightSidebar = document.getElementById('right-sidebar');
-    const mainContent = document.getElementById('main-content');
-
-    leftSidebarToggle.addEventListener('click', () => {
-        leftSidebar.classList.toggle('open');
-    });
-
-    rightSidebarToggle.addEventListener('click', () => {
-        rightSidebar.classList.toggle('open');
-    });
-
-    mainContent.addEventListener('click', () => {
-        leftSidebar.classList.remove('open');
-        rightSidebar.classList.remove('open');
     });
 
     resetBtn.addEventListener('click', () => {
@@ -117,17 +122,42 @@ const initializeApp = async () => {
             alert('Please upload a document image first.');
             return;
         }
+        performOcr();
+    });
 
+    scanCameraBtn.addEventListener('click', async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            video.play();
+
+            // This part is a placeholder for a more complex camera UI
+            alert('Camera access granted. Taking a snapshot in 3 seconds.');
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                documentPreview.src = canvas.toDataURL('image/png');
+                documentPreview.style.display = 'block';
+                stream.getTracks().forEach(track => track.stop());
+                performOcr();
+            }, 3000);
+        } catch (error) {
+            handlePermissionsError(error);
+        }
+    });
+
+    async function performOcr() {
         scanDocumentBtn.textContent = 'Scanning...';
         scanDocumentBtn.disabled = true;
-
         try {
             const { data: { text } } = await Tesseract.recognize(
                 documentPreview.src,
                 'eng',
                 { logger: m => console.log(m) }
             );
-
             const selectedDocumentType = documentType.value;
             if (selectedDocumentType === 'business-card') {
                 parseBusinessCard(text);
@@ -141,20 +171,14 @@ const initializeApp = async () => {
             scanDocumentBtn.textContent = 'Scan Document';
             scanDocumentBtn.disabled = false;
         }
-    });
+    }
 
-    async function checkPermissionsAndScan() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-            stream.getTracks().forEach(track => track.stop());
-            alert('Camera access granted. You can now scan your document.');
-        } catch (error) {
-            console.error('Permission error:', error);
-            if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
-                alert('Camera access was denied. Please enable camera permissions in your browser settings to use this feature.');
-            } else {
-                alert('An error occurred while trying to access the camera. Please ensure your browser supports camera access and that you have a working camera.');
-            }
+    function handlePermissionsError(error) {
+        console.error('Permission error:', error);
+        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+            alert('Camera access was denied. Please enable camera permissions in your browser settings to use this feature.');
+        } else {
+            alert('An error occurred while trying to access the camera. Please ensure your browser supports camera access and that you have a working camera.');
         }
     }
 
@@ -175,7 +199,6 @@ const initializeApp = async () => {
 
         const lines = text.split('\n');
         if (lines.length > 1) {
-            // Correctly assign the second line to the company name
             data.company = lines[1];
         }
 
@@ -224,9 +247,6 @@ const initializeApp = async () => {
             if (data.dob) document.getElementById('applicant-dob').value = data.dob;
         }
     }
-
-    const scanCameraBtn = document.getElementById('scan-camera-btn');
-    scanCameraBtn.addEventListener('click', checkPermissionsAndScan);
 
     loadPdf();
 };
