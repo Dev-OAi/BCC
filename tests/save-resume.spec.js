@@ -1,75 +1,74 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Save and Resume Functionality', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => localStorage.clear());
+  });
 
-    test.beforeEach(async ({ page }) => {
-        await page.goto('/');
-        await page.evaluate(() => localStorage.clear());
+  test('should save form data to localStorage on input', async ({ page }) => {
+    await page.fill('#business-name', 'Save Test Business');
+    await page.check('#sole-proprietorship');
+
+    const savedData = await page.evaluate(() => {
+      return JSON.parse(localStorage.getItem('savedFormData'));
     });
 
-    test('should save form data to localStorage on input', async ({ page }) => {
-        await page.fill('#business-name', 'Save Test Business');
-        await page.check('#sole-proprietorship');
+    expect(savedData['business-name']).toBe('Save Test Business');
+    expect(savedData['sole-proprietorship']).toBe(true);
+  });
 
-        const savedData = await page.evaluate(() => {
-            return JSON.parse(localStorage.getItem('savedFormData'));
-        });
+  test('should restore form data from localStorage on page load', async ({ page }) => {
+    const testData = {
+      'business-name': 'Restore Test Business',
+      'sole-proprietorship': true,
+    };
 
-        expect(savedData['business-name']).toBe('Save Test Business');
-        expect(savedData['sole-proprietorship']).toBe(true);
+    await page.evaluate((data) => {
+      localStorage.setItem('savedFormData', JSON.stringify(data));
+    }, testData);
+
+    page.once('dialog', async (dialog) => {
+      await dialog.accept();
     });
 
-    test('should restore form data from localStorage on page load', async ({ page }) => {
-        const testData = {
-            'business-name': 'Restore Test Business',
-            'sole-proprietorship': true,
-        };
+    await page.reload();
 
-        await page.evaluate((data) => {
-            localStorage.setItem('savedFormData', JSON.stringify(data));
-        }, testData);
+    await expect(page.locator('#business-name')).toHaveValue('Restore Test Business');
+    await expect(page.locator('#sole-proprietorship')).toBeChecked();
+  });
 
-        page.once('dialog', async (dialog) => {
-            await dialog.accept();
-        });
+  test('should not restore form data if user cancels the prompt', async ({ page }) => {
+    const testData = {
+      'business-name': 'No Restore Business',
+    };
 
-        await page.reload();
+    await page.evaluate((data) => {
+      localStorage.setItem('savedFormData', JSON.stringify(data));
+    }, testData);
 
-        await expect(page.locator('#business-name')).toHaveValue('Restore Test Business');
-        await expect(page.locator('#sole-proprietorship')).toBeChecked();
+    page.once('dialog', async (dialog) => {
+      await dialog.dismiss();
     });
 
-    test('should not restore form data if user cancels the prompt', async ({ page }) => {
-        const testData = {
-            'business-name': 'No Restore Business',
-        };
+    await page.reload();
 
-        await page.evaluate((data) => {
-            localStorage.setItem('savedFormData', JSON.stringify(data));
-        }, testData);
+    await expect(page.locator('#business-name')).toBeEmpty();
+  });
 
-        page.once('dialog', async (dialog) => {
-            await dialog.dismiss();
-        });
+  test('should clear localStorage when the form is reset', async ({ page }) => {
+    await page.fill('#business-name', 'Reset Test Business');
 
-        await page.reload();
-
-        await expect(page.locator('#business-name')).toBeEmpty();
+    page.once('dialog', async (dialog) => {
+      await dialog.accept();
     });
 
-    test('should clear localStorage when the form is reset', async ({ page }) => {
-        await page.fill('#business-name', 'Reset Test Business');
+    await page.click('#reset-btn');
 
-        page.once('dialog', async (dialog) => {
-            await dialog.accept();
-        });
-
-        await page.click('#reset-btn');
-
-        const savedData = await page.evaluate(() => {
-            return localStorage.getItem('savedFormData');
-        });
-
-        expect(savedData).toBeNull();
+    const savedData = await page.evaluate(() => {
+      return localStorage.getItem('savedFormData');
     });
+
+    expect(savedData).toBeNull();
+  });
 });
