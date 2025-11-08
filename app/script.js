@@ -22,7 +22,31 @@ const initializeApp = async () => {
     const rightSidebar = document.getElementById('right-sidebar');
     const backdrop = document.getElementById('backdrop');
 
-    let pdfDoc;
+    // Navigation elements
+    const homeBtn = document.getElementById('home-btn');
+    const pdfTemplatesBtn = document.getElementById('pdf-templates-btn');
+    const formColumn = document.getElementById('form-column');
+    const pdfTemplatesColumn = document.getElementById('pdf-templates-column');
+    const pdfUpload = document.getElementById('pdf-upload');
+    const processPdfBtn = document.getElementById('process-pdf-btn');
+    const pdfPreview = document.getElementById('pdf-preview');
+    const dynamicForm = document.getElementById('dynamic-form');
+
+    let pdfDoc, templatePdfDoc;
+
+    homeBtn.addEventListener('click', () => {
+        formColumn.style.display = 'block';
+        pdfTemplatesColumn.style.display = 'none';
+    });
+
+    pdfTemplatesBtn.addEventListener('click', () => {
+        formColumn.style.display = 'none';
+        pdfTemplatesColumn.style.display = 'block';
+    });
+
+    if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+    }
 
     const fieldCoordinates = {
         'CREDIT LINE REQUESTED': { top: '10.5%', left: '25%' },
@@ -111,8 +135,21 @@ const initializeApp = async () => {
     });
 
     fillPdfBtn.addEventListener('click', async () => {
-        const pdfForm = pdfDoc.getForm();
-        const inputs = form.querySelectorAll('input, select');
+        let currentPdfDoc = pdfDoc;
+        let activeForm = form;
+
+        if (pdfTemplatesColumn.style.display === 'block') {
+            currentPdfDoc = templatePdfDoc;
+            activeForm = dynamicForm;
+        }
+
+        if (!currentPdfDoc) {
+            alert('Please load or upload a PDF first.');
+            return;
+        }
+
+        const pdfForm = currentPdfDoc.getForm();
+        const inputs = activeForm.querySelectorAll('input, select');
         inputs.forEach(input => {
             try {
                 if (input.type === 'checkbox') {
@@ -286,6 +323,82 @@ const initializeApp = async () => {
             if (data.address_state) document.getElementById('applicant-state').value = data.address_state;
             if (data.address_zip) document.getElementById('applicant-zip').value = data.address_zip;
             if (data.dob) document.getElementById('applicant-dob').value = data.dob;
+        }
+    }
+
+    processPdfBtn.addEventListener('click', async () => {
+        if (!pdfUpload.files || pdfUpload.files.length === 0) {
+            alert('Please select a PDF file first.');
+            return;
+        }
+        processPdf(pdfUpload.files[0]);
+    });
+
+    async function processPdf(file) {
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            const pdfBytes = event.target.result;
+            templatePdfDoc = await PDFDocument.load(pdfBytes);
+
+            dynamicForm.innerHTML = '';
+
+            const form = pdfDoc.getForm();
+            const fields = form.getFields();
+
+            fields.forEach(field => {
+                const label = document.createElement('label');
+                label.textContent = field.getName();
+
+                let input;
+                if (field instanceof PDFLib.PDFTextField) {
+                    input = document.createElement('input');
+                    input.type = 'text';
+                } else if (field instanceof PDFLib.PDFCheckBox) {
+                    input = document.createElement('input');
+                    input.type = 'checkbox';
+                }
+
+                if (input) {
+                    input.name = field.getName();
+                    dynamicForm.appendChild(label);
+                    dynamicForm.appendChild(input);
+                    dynamicForm.appendChild(document.createElement('br'));
+                }
+            });
+
+            renderPdfPreview(pdfBytes);
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    async function renderPdfPreview(pdfBytes) {
+        if (!window.pdfjsLib) {
+            console.error('pdf.js is not loaded.');
+            return;
+        }
+        console.log('Rendering PDF preview...');
+        try {
+            const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+            const pdf = await loadingTask.promise;
+            console.log('PDF loaded for preview.');
+            const page = await pdf.getPage(1);
+            console.log('Got page 1 for preview.');
+            const viewport = page.getViewport({ scale: 1.5 });
+
+            const canvas = pdfPreview;
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            console.log(`Canvas dimensions set to: ${canvas.width}x${canvas.height}`);
+
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            await page.render(renderContext).promise;
+            console.log('PDF preview rendered.');
+        } catch (error) {
+            console.error('Error rendering PDF preview:', error);
         }
     }
 

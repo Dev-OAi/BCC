@@ -317,7 +317,6 @@ button:hover {
 
     #right-sidebar {
         grid-area: right-sidebar;
-        width: 45vw; /* Adjust width as needed */
         border-left: 1px solid var(--border-color);
     }
 
@@ -328,4 +327,25 @@ button:hover {
     .backdrop {
         display: none !important; /* Never show backdrop on desktop */
     }
+}
+
+#pdf-templates-column h2 {
+    color: var(--primary-color);
+}
+
+#pdf-upload {
+    margin-bottom: 15px;
+}
+
+#process-pdf-btn {
+    margin-bottom: 15px;
+}
+
+#dynamic-form {
+    margin-top: 20px;
+}
+
+#dynamic-form label {
+    display: block;
+    margin-top: 10px;
 }

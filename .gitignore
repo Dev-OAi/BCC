@@ -1,3 +1,5 @@
 node_modules
 test-results/
 tests/responsiveness.spec.js-snapshots/
+server.log
+.genkit/
