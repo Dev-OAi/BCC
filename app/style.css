@@ -304,3 +304,24 @@ button:hover {
         display: none !important; /* Never show backdrop on desktop */
     }
 }
+
+#pdf-templates-column h2 {
+    color: var(--primary-color);
+}
+
+#pdf-upload {
+    margin-bottom: 15px;
+}
+
+#process-pdf-btn {
+    margin-bottom: 15px;
+}
+
+#dynamic-form {
+    margin-top: 20px;
+}
+
+#dynamic-form label {
+    display: block;
+    margin-top: 10px;
+}
