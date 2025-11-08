@@ -31,7 +31,7 @@ const initializeApp = async () => {
     const pdfPreview = document.getElementById('pdf-preview');
     const dynamicForm = document.getElementById('dynamic-form');
 
-    let pdfDoc;
+    let pdfDoc, templatePdfDoc;
 
     homeBtn.addEventListener('click', () => {
         formColumn.style.display = 'block';
@@ -93,14 +93,20 @@ const initializeApp = async () => {
     backdrop.addEventListener('click', closeSidebars);
 
     fillPdfBtn.addEventListener('click', async () => {
-        const pdfForm = pdfDoc.getForm();
-        let activeForm;
+        let currentPdfDoc = pdfDoc;
+        let activeForm = form;
+
         if (pdfTemplatesColumn.style.display === 'block') {
+            currentPdfDoc = templatePdfDoc;
             activeForm = dynamicForm;
-        } else {
-            activeForm = form;
         }
 
+        if (!currentPdfDoc) {
+            alert('Please load or upload a PDF first.');
+            return;
+        }
+
+        const pdfForm = currentPdfDoc.getForm();
         const inputs = activeForm.querySelectorAll('input, select');
         inputs.forEach(input => {
             try {
@@ -291,7 +297,7 @@ const initializeApp = async () => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             const pdfBytes = event.target.result;
-            pdfDoc = await PDFDocument.load(pdfBytes);
+            templatePdfDoc = await PDFDocument.load(pdfBytes);
 
             dynamicForm.innerHTML = '';
 
@@ -329,21 +335,30 @@ const initializeApp = async () => {
             console.error('pdf.js is not loaded.');
             return;
         }
-        const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
-        const pdf = await loadingTask.promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 1 });
+        console.log('Rendering PDF preview...');
+        try {
+            const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+            const pdf = await loadingTask.promise;
+            console.log('PDF loaded for preview.');
+            const page = await pdf.getPage(1);
+            console.log('Got page 1 for preview.');
+            const viewport = page.getViewport({ scale: 1.5 });
 
-        const canvas = pdfPreview;
-        const context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+            const canvas = pdfPreview;
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            console.log(`Canvas dimensions set to: ${canvas.width}x${canvas.height}`);
 
-        const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        await page.render(renderContext).promise;
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            await page.render(renderContext).promise;
+            console.log('PDF preview rendered.');
+        } catch (error) {
+            console.error('Error rendering PDF preview:', error);
+        }
     }
 
     loadPdf();
