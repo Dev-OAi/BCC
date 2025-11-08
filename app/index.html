@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   </head>
   <body>
     <div class="app-shell">
@@ -1021,6 +1023,7 @@
               <button type="button" id="preview-pdf-btn" data-i18n="previewPdf">Preview PDF</button>
               <button type="button" id="download-btn" data-i18n="downloadPdf">Download PDF</button>
               <button type="button" id="reset-btn" data-i18n="resetForm">Reset Form</button>
+              <button type="button" id="save-share-btn" data-i18n="saveAndShare">Save and Share</button>
             </div>
           </form>
         </div>
@@ -1041,10 +1044,15 @@
         aria-labelledby="right-sidebar-toggle"
       >
         <div class="pdf-column" id="pdf-column">
+          <div style="position: relative;">
+            <img id="pdf-image" style="width: 100%;" />
+            <div id="pdf-overlays"></div>
+          </div>
           <iframe
             id="pdf-viewer"
             frameborder="0"
             title="PDF viewer for the credit card application"
+            style="display: none;"
           ></iframe>
         </div>
       </aside>
@@ -1059,6 +1067,38 @@
         </div>
       </footer>
     </div>
+
+    <div id="share-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 data-i18n="shareModalTitle">Save & Share Encrypted Link</h2>
+        <p data-i18n="shareModalInstructions">
+          Create a password to encrypt your form data. This password will be required to unlock and view the data later. The data is stored securely in the link itself.
+        </p>
+        <label for="encryption-password" data-i18n="password">Password:</label>
+        <input type="password" id="encryption-password" />
+        <button id="generate-link-btn" data-i18n="generateLink">Generate Link</button>
+        <div id="generated-link-container" style="display: none;">
+          <p data-i18n="shareLinkInstructions">
+            Your secure link is ready. Click the link to open it in your default email client. Remember to share the password separately.
+          </p>
+          <a id="mailto-link" href="#">Click to Email Link</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="resume-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h2 data-i18n="resumeModalTitle">Encrypted Data Found</h2>
+        <p data-i18n="resumeModalInstructions">
+          This link contains encrypted application data. Please enter the password to unlock it.
+        </p>
+        <label for="decryption-password" data-i18n="password">Password:</label>
+        <input type="password" id="decryption-password" />
+        <button id="unlock-data-btn" data-i18n="unlock">Unlock</button>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
