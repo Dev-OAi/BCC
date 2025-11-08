@@ -36,6 +36,10 @@ test.describe('PDF Application Form Tests', () => {
     await expect(preview).toHaveAttribute('src', /data:image/, { timeout: 10000 });
     await expect(preview).toBeVisible();
 
+    page.once('dialog', async (dialog) => {
+        await dialog.accept();
+    });
+
     await page.click('#reset-btn');
 
     await expect(page.locator('#business-name')).toBeEmpty();

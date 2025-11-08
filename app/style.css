@@ -260,6 +260,17 @@ button:hover {
     opacity: 1;
 }
 
+.error-message {
+    color: #d93025;
+    font-size: 0.875em;
+    margin-top: 5px;
+    display: block;
+}
+
+input.invalid {
+    border-color: #d93025;
+}
+
 /* Desktop Styles */
 @media (min-width: 1024px) {
     .app-shell {

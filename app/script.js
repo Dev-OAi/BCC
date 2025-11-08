@@ -68,6 +68,19 @@ const initializeApp = async () => {
 
     backdrop.addEventListener('click', closeSidebars);
 
+    form.addEventListener('input', () => {
+        const formData = {};
+        const inputs = form.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                formData[input.id] = input.checked;
+            } else {
+                formData[input.id] = input.value;
+            }
+        });
+        localStorage.setItem('savedFormData', JSON.stringify(formData));
+    });
+
     fillPdfBtn.addEventListener('click', async () => {
         const pdfForm = pdfDoc.getForm();
         const inputs = form.querySelectorAll('input, select');
@@ -99,11 +112,14 @@ const initializeApp = async () => {
     });
 
     resetBtn.addEventListener('click', () => {
-        form.reset();
-        documentPreview.style.display = 'none';
-        documentPreview.src = '#';
-        documentUpload.value = '';
-        loadPdf();
+        if (confirm("Are you sure you want to reset the form? This will clear all fields and remove any saved data.")) {
+            form.reset();
+            localStorage.removeItem('savedFormData');
+            documentPreview.style.display = 'none';
+            documentPreview.src = '#';
+            documentUpload.value = '';
+            loadPdf();
+        }
     });
 
     documentUpload.addEventListener('change', (event) => {
@@ -248,7 +264,70 @@ const initializeApp = async () => {
         }
     }
 
+    function validateInput(input, regex, errorMessage) {
+        const errorElement = document.getElementById(`${input.id}-error`);
+        if (!regex.test(input.value)) {
+            errorElement.textContent = errorMessage;
+            input.classList.add('invalid');
+        } else {
+            errorElement.textContent = '';
+            input.classList.remove('invalid');
+        }
+    }
+
+    form.addEventListener('input', (e) => {
+        switch (e.target.id) {
+            case 'email-address':
+            case 'applicant-business-email':
+            case 'applicant2-business-email':
+            case 'cardholder1-business-email':
+            case 'cardholder2-business-email':
+            case 'cardholder3-business-email':
+                validateInput(e.target, /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email address.');
+                break;
+            case 'applicant-ssn':
+            case 'applicant2-ssn':
+            case 'cardholder1-ssn':
+            case 'cardholder2-ssn':
+            case 'cardholder3-ssn':
+                validateInput(e.target, /^\d{3}-\d{2}-\d{4}$/, 'Invalid SSN (must be XXX-XX-XXXX).');
+                break;
+            case 'applicant-dob':
+            case 'applicant2-dob':
+            case 'cardholder1-dob':
+            case 'cardholder2-dob':
+            case 'cardholder3-dob':
+                validateInput(e.target, /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/, 'Invalid date format (must be MM/DD/YYYY).');
+                break;
+            case 'business-phone':
+            case 'applicant-home-phone':
+            case 'applicant2-home-phone':
+                validateInput(e.target, /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/, 'Invalid phone number.');
+                break;
+        }
+    });
+
+    function loadSavedData() {
+        const savedData = localStorage.getItem('savedFormData');
+        if (savedData) {
+            if (confirm("Would you like to restore your previously saved data?")) {
+                const formData = JSON.parse(savedData);
+                for (const key in formData) {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     loadPdf();
+    loadSavedData();
 };
 
 if (document.readyState === 'loading') {
