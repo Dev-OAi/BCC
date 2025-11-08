@@ -381,29 +381,58 @@ const initializeApp = async () => {
 
             dynamicForm.innerHTML = '';
 
-            const form = pdfDoc.getForm();
+            const form = templatePdfDoc.getForm();
             const fields = form.getFields();
 
             fields.forEach(field => {
+                const fieldName = field.getName();
                 const label = document.createElement('label');
-                label.textContent = field.getName();
+                label.textContent = fieldName;
+                dynamicForm.appendChild(label);
 
-                let input;
                 if (field instanceof PDFLib.PDFTextField) {
-                    input = document.createElement('input');
+                    const input = document.createElement('input');
                     input.type = 'text';
-                } else if (field instanceof PDFLib.PDFCheckBox) {
-                    input = document.createElement('input');
-                    input.type = 'checkbox';
-                }
-
-                if (input) {
-                    input.name = field.getName();
-                    dynamicForm.appendChild(label);
+                    input.name = fieldName;
                     dynamicForm.appendChild(input);
-                    dynamicForm.appendChild(document.createElement('br'));
+                } else if (field instanceof PDFLib.PDFCheckBox) {
+                    const input = document.createElement('input');
+                    input.type = 'checkbox';
+                    input.name = fieldName;
+                    dynamicForm.appendChild(input);
+                } else if (field instanceof PDFLib.PDFDropdown) {
+                    const select = document.createElement('select');
+                    select.name = fieldName;
+                    const options = field.getOptions();
+                    options.forEach(option => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = option;
+                        optionElement.textContent = option;
+                        select.appendChild(optionElement);
+                    });
+                    dynamicForm.appendChild(select);
+                } else if (field instanceof PDFLib.PDFRadioGroup) {
+                    const options = field.getOptions();
+                    options.forEach(option => {
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.name = fieldName;
+                        input.value = option;
+                        
+                        const radioLabel = document.createElement('label');
+                        radioLabel.textContent = option;
+                        
+                        dynamicForm.appendChild(input);
+                        dynamicForm.appendChild(radioLabel);
+                    });
                 }
+                dynamicForm.appendChild(document.createElement('br'));
             });
+
+            const fillButton = document.createElement('button');
+            fillButton.textContent = 'Fill PDF';
+            fillButton.addEventListener('click', () => fillPdfBtn.click());
+            dynamicForm.appendChild(fillButton);
 
             renderPdfPreview(pdfBytes);
         };
