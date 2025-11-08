@@ -21,7 +21,7 @@ const initializeApp = async () => {
   const leftSidebar = document.getElementById('left-sidebar');
   const rightSidebar = document.getElementById('right-sidebar');
   const backdrop = document.getElementById('backdrop');
-  const langSelect = document.getElementById('lang-select');
+
 
   // Navigation elements
   const homeBtn = document.getElementById('home-btn');
@@ -86,20 +86,9 @@ const initializeApp = async () => {
     'Mothers Maiden Name': { top: '62%', left: '25%' },
   };
 
-  async function updateUI(lang) {
-    const response = await fetch(`${lang}.json`);
-    const translations = await response.json();
-    document.querySelectorAll('[data-i18n]').forEach((element) => {
-      const key = element.getAttribute('data-i18n');
-      element.textContent = translations[key];
-    });
-  }
 
-  langSelect.addEventListener('change', (e) => {
-    const lang = e.target.value;
-    localStorage.setItem('language', lang);
-    updateUI(lang);
-  });
+
+
 
   async function loadPdf() {
     try {
@@ -550,9 +539,7 @@ const initializeApp = async () => {
     }
   }
 
-  const savedLang = localStorage.getItem('language') || 'en';
-  langSelect.value = savedLang;
-  updateUI(savedLang);
+
 
   loadPdf();
   loadSavedData();
