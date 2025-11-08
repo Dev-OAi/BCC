@@ -6,6 +6,7 @@
     <title>Business Credit Card Application</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
 </head>
 <body>
     <div class="main-container">
@@ -16,6 +17,26 @@
             <div class="form-column">
                 <p>Fill out the form below to see the fields populated in the PDF on the right. Educational tooltips are available to guide you.</p>
                 <form id="application-form">
+
+                    <!-- Document Scanner -->
+                    <fieldset>
+                        <legend>Document Scanner</legend>
+                        <div class="tooltip">
+                            <label for="document-type">Document Type</label>
+                            <select id="document-type" name="document-type">
+                                <option value="business-card">Business Card</option>
+                                <option value="drivers-license">Driver's License</option>
+                            </select>
+                            <span class="tooltiptext">Select the type of document you are scanning.</span>
+                        </div>
+                        <div class="tooltip">
+                            <label for="document-upload">Upload Document</label>
+                            <input type="file" id="document-upload" accept="image/*">
+                            <span class="tooltiptext">Upload an image of your business card or driver's license.</span>
+                        </div>
+                        <img id="document-preview" src="#" alt="Document preview" style="display: none; max-width: 100%; margin-top: 10px;">
+                        <button type="button" id="scan-document-btn">Scan Document</button>
+                    </fieldset>
 
                     <!-- Business Information -->
                     <fieldset>
@@ -587,6 +608,7 @@
                         <button type="button" id="fill-pdf-btn">Fill PDF</button>
                         <button type="button" id="preview-pdf-btn">Preview PDF</button>
                         <button type="button" id="download-btn">Download PDF</button>
+                        <button type="button" id="reset-btn">Reset Form</button>
                     </div>
                 </form>
             </div>
