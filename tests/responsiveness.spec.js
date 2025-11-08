@@ -10,7 +10,7 @@ test.describe('Responsiveness Test', () => {
   for (const viewport of viewports) {
     test(`should render correctly on ${viewport.width}x${viewport.height}`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto('file://' + __dirname + '/../app/index.html');
+      await page.goto('/');
       await expect(page).toHaveScreenshot(`screenshot-${viewport.width}x${viewport.height}.png`);
     });
   }
