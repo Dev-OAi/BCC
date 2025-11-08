@@ -292,7 +292,6 @@ button:hover {
 
     #right-sidebar {
         grid-area: right-sidebar;
-        width: 45vw; /* Adjust width as needed */
         border-left: 1px solid var(--border-color);
     }
 
