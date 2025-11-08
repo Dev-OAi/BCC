@@ -4,6 +4,8 @@ const path = require('path');
 test.describe('PDF Application Form Tests', () => {
 
   test.beforeEach(async ({ page }) => {
+    // Set a mobile viewport to ensure the sidebar is not persistently visible
+    await page.setViewportSize({ width: 375, height: 667 });
     const filePath = path.join(__dirname, '..', 'app', 'index.html');
     await page.goto(`file://${filePath}`);
   });
@@ -35,10 +37,6 @@ test.describe('PDF Application Form Tests', () => {
     // Wait for the FileReader to update the src attribute
     await expect(preview).toHaveAttribute('src', /data:image/, { timeout: 10000 });
     await expect(preview).toBeVisible();
-
-    page.once('dialog', async (dialog) => {
-        await dialog.accept();
-    });
 
     await page.click('#reset-btn');
 

@@ -4,7 +4,8 @@ const initializeApp = async () => {
     const form = document.getElementById('application-form');
     const fillPdfBtn = document.getElementById('fill-pdf-btn');
     const downloadBtn = document.getElementById('download-btn');
-    const pdfViewer = document.getElementById('pdf-viewer');
+    const pdfImage = document.getElementById('pdf-image');
+    const pdfOverlays = document.getElementById('pdf-overlays');
     const resetBtn = document.getElementById('reset-btn');
 
     // Document scanner elements
@@ -23,25 +24,50 @@ const initializeApp = async () => {
 
     let pdfDoc;
 
+    const fieldCoordinates = {
+        'CREDIT LINE REQUESTED': { top: '10.5%', left: '25%' },
+        'Business Name to appear on card': { top: '12.5%', left: '25%' },
+        'Tax Identification Number': { top: '14.5%', left: '25%' },
+        'Type of Business': { top: '16.5%', left: '25%' },
+        'Business Address street address': { top: '18.5%', left: '25%' },
+        'City': { top: '20.5%', left: '25%' },
+        'State': { top: '20.5%', left: '60%' },
+        'Zip Code': { top: '20.5%', left: '80%' },
+        'Mailing Address if different from Business Address': { top: '22.5%', left: '25%' },
+        'City_2': { top: '24.5%', left: '25%' },
+        'State_2': { top: '24.5%', left: '60%' },
+        'Zip Code_2': { top: '24.5%', left: '80%' },
+        'Business Phone': { top: '26.5%', left: '25%' },
+        'Primary Banking Relationship': { top: '28.5%', left: '25%' },
+        'Branch Location': { top: '30.5%', left: '25%' },
+        'Email Address': { top: '32.5%', left: '25%' },
+        'Date of Origin': { top: '34.5%', left: '25%' },
+        'Years in Business': { top: '34.5%', left: '60%' },
+        'Gross Annual Revenue': { top: '36.5%', left: '25%' },
+        'Number of Employees': { top: '38.5%', left: '25%' },
+        'Name on Card first last': { top: '44%', left: '25%' },
+        'Title if any': { top: '46%', left: '25%' },
+        'Of Ownership': { top: '46%', left: '60%' },
+        'Annual Income': { top: '48%', left: '25%' },
+        'Social Security NumberITIN': { top: '50%', left: '25%' },
+        'Home Address street address': { top: '52%', left: '25%' },
+        'City_3': { top: '54%', left: '25%' },
+        'State_3': { top: '54%', left: '60%' },
+        'Zip_3': { top: '54%', left: '80%' },
+        'Date of Birth': { top: '56%', left: '25%' },
+        'Home Phone': { top: '58%', left: '25%' },
+        'Business Email Address': { top: '60%', left: '25%' },
+        'Mothers Maiden Name': { top: '62%', left: '25%' },
+    };
+
     async function loadPdf() {
         try {
             const pdfUrl = './business-credit-card-application.pdf';
             const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
             pdfDoc = await PDFDocument.load(existingPdfBytes);
-            renderPdf();
+            pdfImage.src = './business-credit-card-application.png';
         } catch (error) {
             console.error("Failed to load PDF:", error);
-        }
-    }
-
-    async function renderPdf() {
-        try {
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            pdfViewer.src = url;
-        } catch (error) {
-            console.error("Failed to render PDF:", error);
         }
     }
 
@@ -68,17 +94,20 @@ const initializeApp = async () => {
 
     backdrop.addEventListener('click', closeSidebars);
 
-    form.addEventListener('input', () => {
-        const formData = {};
-        const inputs = form.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            if (input.type === 'checkbox') {
-                formData[input.id] = input.checked;
-            } else {
-                formData[input.id] = input.value;
-            }
-        });
-        localStorage.setItem('savedFormData', JSON.stringify(formData));
+    form.addEventListener('input', (e) => {
+        const { name, value } = e.target;
+        let overlay = document.getElementById(`overlay-${name}`);
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = `overlay-${name}`;
+            overlay.classList.add('pdf-overlay');
+            pdfOverlays.appendChild(overlay);
+        }
+        overlay.textContent = value;
+        if (fieldCoordinates[name]) {
+            overlay.style.top = fieldCoordinates[name].top;
+            overlay.style.left = fieldCoordinates[name].left;
+        }
     });
 
     fillPdfBtn.addEventListener('click', async () => {
@@ -99,7 +128,6 @@ const initializeApp = async () => {
                 console.warn(`Could not find or set field: ${input.name}`);
             }
         });
-        renderPdf();
     });
 
     downloadBtn.addEventListener('click', async () => {
@@ -112,14 +140,11 @@ const initializeApp = async () => {
     });
 
     resetBtn.addEventListener('click', () => {
-        if (confirm("Are you sure you want to reset the form? This will clear all fields and remove any saved data.")) {
-            form.reset();
-            localStorage.removeItem('savedFormData');
-            documentPreview.style.display = 'none';
-            documentPreview.src = '#';
-            documentUpload.value = '';
-            loadPdf();
-        }
+        form.reset();
+        documentPreview.style.display = 'none';
+        documentPreview.src = '#';
+        documentUpload.value = '';
+        loadPdf();
     });
 
     documentUpload.addEventListener('change', (event) => {
@@ -264,70 +289,7 @@ const initializeApp = async () => {
         }
     }
 
-    function validateInput(input, regex, errorMessage) {
-        const errorElement = document.getElementById(`${input.id}-error`);
-        if (!regex.test(input.value)) {
-            errorElement.textContent = errorMessage;
-            input.classList.add('invalid');
-        } else {
-            errorElement.textContent = '';
-            input.classList.remove('invalid');
-        }
-    }
-
-    form.addEventListener('input', (e) => {
-        switch (e.target.id) {
-            case 'email-address':
-            case 'applicant-business-email':
-            case 'applicant2-business-email':
-            case 'cardholder1-business-email':
-            case 'cardholder2-business-email':
-            case 'cardholder3-business-email':
-                validateInput(e.target, /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email address.');
-                break;
-            case 'applicant-ssn':
-            case 'applicant2-ssn':
-            case 'cardholder1-ssn':
-            case 'cardholder2-ssn':
-            case 'cardholder3-ssn':
-                validateInput(e.target, /^\d{3}-\d{2}-\d{4}$/, 'Invalid SSN (must be XXX-XX-XXXX).');
-                break;
-            case 'applicant-dob':
-            case 'applicant2-dob':
-            case 'cardholder1-dob':
-            case 'cardholder2-dob':
-            case 'cardholder3-dob':
-                validateInput(e.target, /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/, 'Invalid date format (must be MM/DD/YYYY).');
-                break;
-            case 'business-phone':
-            case 'applicant-home-phone':
-            case 'applicant2-home-phone':
-                validateInput(e.target, /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/, 'Invalid phone number.');
-                break;
-        }
-    });
-
-    function loadSavedData() {
-        const savedData = localStorage.getItem('savedFormData');
-        if (savedData) {
-            if (confirm("Would you like to restore your previously saved data?")) {
-                const formData = JSON.parse(savedData);
-                for (const key in formData) {
-                    const input = document.getElementById(key);
-                    if (input) {
-                        if (input.type === 'checkbox') {
-                            input.checked = formData[key];
-                        } else {
-                            input.value = formData[key];
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     loadPdf();
-    loadSavedData();
 };
 
 if (document.readyState === 'loading') {
