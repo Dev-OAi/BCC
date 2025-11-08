@@ -1,11 +1,9 @@
 const { test, expect } = require('@playwright/test');
-const path = require('path');
 
 test.describe('PDF Application Form Tests', () => {
 
   test.beforeEach(async ({ page }) => {
-    const filePath = path.join(__dirname, '..', 'app', 'index.html');
-    await page.goto(`file://${filePath}`);
+    await page.goto('/');
   });
 
   test('should fill the PDF with the complete form data', async ({ page }) => {
@@ -35,6 +33,10 @@ test.describe('PDF Application Form Tests', () => {
     // Wait for the FileReader to update the src attribute
     await expect(preview).toHaveAttribute('src', /data:image/, { timeout: 10000 });
     await expect(preview).toBeVisible();
+
+    page.once('dialog', async (dialog) => {
+        await dialog.accept();
+    });
 
     await page.click('#reset-btn');
 
