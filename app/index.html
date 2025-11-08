@@ -5,19 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Credit Card Application</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
 </head>
 <body>
-    <div class="main-container">
-        <header>
-            <h1>Business Credit Card Application</h1>
+    <div class="app-shell">
+        <header class="app-header">
+            <button id="left-sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="header-title">
+                <h1>Business Credit Card Application</h1>
+            </div>
+            <button id="right-sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-file-pdf"></i>
+            </button>
         </header>
-        <div class="content-container">
+
+        <aside id="left-sidebar" class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Applications</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main id="main-content">
             <div class="form-column">
                 <p>Fill out the form below to see the fields populated in the PDF on the right. Educational tooltips are available to guide you.</p>
                 <form id="application-form">
-
                     <!-- Document Scanner -->
                     <fieldset>
                         <legend>Document Scanner</legend>
@@ -35,7 +55,10 @@
                             <span class="tooltiptext">Upload an image of your business card or driver's license.</span>
                         </div>
                         <img id="document-preview" src="#" alt="Document preview" style="display: none; max-width: 100%; margin-top: 10px;">
-                        <button type="button" id="scan-document-btn">Scan Document</button>
+                        <div class="buttons">
+                            <button type="button" id="scan-document-btn">Scan Document</button>
+                            <button type="button" id="scan-camera-btn">Scan with Camera</button>
+                        </div>
                     </fieldset>
 
                     <!-- Business Information -->
@@ -612,10 +635,13 @@
                     </div>
                 </form>
             </div>
+        </main>
+
+        <aside id="right-sidebar" class="sidebar">
             <div class="pdf-column" id="pdf-column">
                 <iframe id="pdf-viewer" frameborder="0"></iframe>
             </div>
-        </div>
+        </aside>
     </div>
     <script src="script.js"></script>
 </body>

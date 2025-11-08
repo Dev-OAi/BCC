@@ -73,6 +73,26 @@ const initializeApp = async () => {
         }
     });
 
+    // Sidebar Toggles
+    const leftSidebarToggle = document.getElementById('left-sidebar-toggle');
+    const rightSidebarToggle = document.getElementById('right-sidebar-toggle');
+    const leftSidebar = document.getElementById('left-sidebar');
+    const rightSidebar = document.getElementById('right-sidebar');
+    const mainContent = document.getElementById('main-content');
+
+    leftSidebarToggle.addEventListener('click', () => {
+        leftSidebar.classList.toggle('open');
+    });
+
+    rightSidebarToggle.addEventListener('click', () => {
+        rightSidebar.classList.toggle('open');
+    });
+
+    mainContent.addEventListener('click', () => {
+        leftSidebar.classList.remove('open');
+        rightSidebar.classList.remove('open');
+    });
+
     resetBtn.addEventListener('click', () => {
         form.reset();
         documentPreview.style.display = 'none';
@@ -101,22 +121,42 @@ const initializeApp = async () => {
         scanDocumentBtn.textContent = 'Scanning...';
         scanDocumentBtn.disabled = true;
 
-        const { data: { text } } = await Tesseract.recognize(
-            documentPreview.src,
-            'eng',
-            { logger: m => console.log(m) }
-        );
+        try {
+            const { data: { text } } = await Tesseract.recognize(
+                documentPreview.src,
+                'eng',
+                { logger: m => console.log(m) }
+            );
 
-        const selectedDocumentType = documentType.value;
-        if (selectedDocumentType === 'business-card') {
-            parseBusinessCard(text);
-        } else if (selectedDocumentType === 'drivers-license') {
-            parseDriversLicense(text);
+            const selectedDocumentType = documentType.value;
+            if (selectedDocumentType === 'business-card') {
+                parseBusinessCard(text);
+            } else if (selectedDocumentType === 'drivers-license') {
+                parseDriversLicense(text);
+            }
+        } catch (error) {
+            console.error('Error during OCR scanning:', error);
+            alert('An error occurred during scanning. Please check the console for more details.');
+        } finally {
+            scanDocumentBtn.textContent = 'Scan Document';
+            scanDocumentBtn.disabled = false;
         }
-
-        scanDocumentBtn.textContent = 'Scan Document';
-        scanDocumentBtn.disabled = false;
     });
+
+    async function checkPermissionsAndScan() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            stream.getTracks().forEach(track => track.stop());
+            alert('Camera access granted. You can now scan your document.');
+        } catch (error) {
+            console.error('Permission error:', error);
+            if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                alert('Camera access was denied. Please enable camera permissions in your browser settings to use this feature.');
+            } else {
+                alert('An error occurred while trying to access the camera. Please ensure your browser supports camera access and that you have a working camera.');
+            }
+        }
+    }
 
     function parseBusinessCard(text) {
         const data = {};
@@ -184,6 +224,9 @@ const initializeApp = async () => {
             if (data.dob) document.getElementById('applicant-dob').value = data.dob;
         }
     }
+
+    const scanCameraBtn = document.getElementById('scan-camera-btn');
+    scanCameraBtn.addEventListener('click', checkPermissionsAndScan);
 
     loadPdf();
 };
