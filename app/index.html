@@ -32,11 +32,10 @@
           <h1 data-i18n="appTitle">Business Credit Card Application</h1>
         </div>
         <div class="header-controls">
-
-          <div class="header-controls">
             <button type="button" id="fill-pdf-btn" data-i18n="fillPdf">Fill PDF</button>
             <button type="button" id="download-btn" data-i18n="downloadPdf">Download PDF</button>
             <button type="button" id="reset-btn" data-i18n="resetForm">Reset Form</button>
+            <button type="button" id="save-share-btn" data-i18n="saveAndShare">Save and Share</button>
           <button
             id="right-sidebar-toggle"
             class="sidebar-toggle"
@@ -1058,40 +1057,74 @@
 
       <div id="backdrop" class="backdrop"></div>
 
-
     </div>
+
+
 
     <div id="share-modal" class="modal" style="display: none;">
+
       <div class="modal-content">
+
         <span class="close-button">&times;</span>
+
         <h2 data-i18n="shareModalTitle">Save & Share Encrypted Link</h2>
+
         <p data-i18n="shareModalInstructions">
+
           Create a password to encrypt your form data. This password will be required to unlock and view the data later. The data is stored securely in the link itself.
+
         </p>
+
         <label for="encryption-password" data-i18n="password">Password:</label>
+
         <input type="password" id="encryption-password" />
+
         <button id="generate-link-btn" data-i18n="generateLink">Generate Link</button>
+
         <div id="generated-link-container" style="display: none;">
+
           <p data-i18n="shareLinkInstructions">
+
             Your secure link is ready. Click the link to open it in your default email client. Remember to share the password separately.
+
           </p>
+
           <a id="mailto-link" href="#">Click to Email Link</a>
+
         </div>
+
       </div>
+
     </div>
+
+
 
     <div id="resume-modal" class="modal" style="display: none;">
+
       <div class="modal-content">
+
         <h2 data-i18n="resumeModalTitle">Encrypted Data Found</h2>
+
         <p data-i18n="resumeModalInstructions">
+
           This link contains encrypted application data. Please enter the password to unlock it.
+
         </p>
+
         <label for="decryption-password" data-i18n="password">Password:</label>
+
         <input type="password" id="decryption-password" />
+
         <button id="unlock-data-btn" data-i18n="unlock">Unlock</button>
+
       </div>
+
     </div>
 
+
+
     <script src="script.js"></script>
+
   </body>
+
 </html>

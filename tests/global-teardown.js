@@ -1,4 +1,4 @@
-module.exports = async () => {
+export default async () => {
   if (global.server) {
     await new Promise((resolve) => global.server.close(resolve));
   }
