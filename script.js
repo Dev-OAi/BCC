@@ -189,6 +189,13 @@ const initializeApp = async () => {
     generatedLinkContainer.style.display = 'block';
   });
 
+  encryptionPassword.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      generateLinkBtn.click();
+    }
+  });
+
   form.addEventListener('input', (e) => {
     // Part 1: Overlay and localStorage logic
     const { name, value, id } = e.target;
