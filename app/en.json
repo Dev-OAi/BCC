@@ -132,5 +132,9 @@
   "fillPdf": "Fill PDF",
   "previewPdf": "Preview PDF",
   "downloadPdf": "Download PDF",
-  "resetForm": "Reset Form"
+  "resetForm": "Reset Form",
+  "saveAndEmail": "Save and Email",
+  "emailModalTitle": "Save & Email Encrypted Link",
+  "emailModalInstructions": "Create a password to encrypt your form data. This password will be required to unlock and view the data later. The data is stored securely in the link itself.",
+  "emailLinkInstructions": "Your secure link is ready. Click the link to open it in your default email client. Remember to share the password separately."
 }

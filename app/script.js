@@ -34,8 +34,8 @@ const initializeApp = async () => {
   const dynamicForm = document.getElementById('dynamic-form');
 
   // Share and Resume Modal elements
-  const saveShareBtn = document.getElementById('save-share-btn');
-  const shareModal = document.getElementById('share-modal');
+  const saveEmailBtn = document.getElementById('save-email-btn');
+  const emailModal = document.getElementById('email-modal');
   const resumeModal = document.getElementById('resume-modal');
   const closeButton = document.querySelector('.close-button');
   const generateLinkBtn = document.getElementById('generate-link-btn');
@@ -152,12 +152,12 @@ const initializeApp = async () => {
 
   backdrop.addEventListener('click', closeSidebars);
 
-  saveShareBtn.addEventListener('click', () => {
-    shareModal.style.display = 'flex';
+  saveEmailBtn.addEventListener('click', () => {
+    emailModal.style.display = 'flex';
   });
 
   closeButton.addEventListener('click', () => {
-    shareModal.style.display = 'none';
+    emailModal.style.display = 'none';
   });
 
   generateLinkBtn.addEventListener('click', () => {
