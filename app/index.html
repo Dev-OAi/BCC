@@ -1041,23 +1041,21 @@
         aria-labelledby="right-sidebar-toggle"
       >
         <div class="pdf-column" id="pdf-column">
+          <div style="position: relative;">
+            <img id="pdf-image" style="width: 100%;" />
+            <div id="pdf-overlays"></div>
+          </div>
           <iframe
             id="pdf-viewer"
             frameborder="0"
             title="PDF viewer for the credit card application"
+            style="display: none;"
           ></iframe>
         </div>
       </aside>
 
       <div id="backdrop" class="backdrop"></div>
 
-      <footer class="app-footer">
-        <div class="buttons">
-          <button type="button" id="fill-pdf-btn">Fill PDF</button>
-          <button type="button" id="download-btn">Download PDF</button>
-          <button type="button" id="reset-btn">Reset Form</button>
-        </div>
-      </footer>
     </div>
     <script src="script.js"></script>
   </body>
