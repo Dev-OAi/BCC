@@ -190,20 +190,22 @@ const initializeApp = async () => {
   });
 
   form.addEventListener('input', (e) => {
-    const { name, value } = e.target;
+    // Part 1: Overlay and localStorage logic
+    const { name, value, id } = e.target;
     let overlay = document.getElementById(`overlay-${name}`);
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = `overlay-${name}`;
-      overlay.classList.add('pdf-overlay');
-      pdfOverlays.appendChild(overlay);
-    }
-    overlay.textContent = value;
-    if (fieldCoordinates[name]) {
+    if (name && fieldCoordinates[name]) {
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = `overlay-${name}`;
+        overlay.classList.add('pdf-overlay');
+        pdfOverlays.appendChild(overlay);
+      }
+      overlay.textContent = value;
       overlay.style.top = fieldCoordinates[name].top;
       overlay.style.left = fieldCoordinates[name].left;
     }
 
+    // Save all form data to localStorage
     const formData = {};
     const inputs = form.querySelectorAll('input, select');
     inputs.forEach((input) => {
@@ -214,6 +216,41 @@ const initializeApp = async () => {
       }
     });
     localStorage.setItem('savedFormData', JSON.stringify(formData));
+
+    // Part 2: Validation logic
+    switch (id) {
+      case 'email-address':
+      case 'applicant-business-email':
+      case 'applicant2-business-email':
+      case 'cardholder1-business-email':
+      case 'cardholder2-business-email':
+      case 'cardholder3-business-email':
+        validateInput(e.target, /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email address.');
+        break;
+      case 'applicant-ssn':
+      case 'applicant2-ssn':
+      case 'cardholder1-ssn':
+      case 'cardholder2-ssn':
+      case 'cardholder3-ssn':
+        validateInput(e.target, /^\d{3}-\d{2}-\d{4}$/, 'Invalid SSN (must be XXX-XX-XXXX).');
+        break;
+      case 'applicant-dob':
+      case 'applicant2-dob':
+      case 'cardholder1-dob':
+      case 'cardholder2-dob':
+      case 'cardholder3-dob':
+        validateInput(
+          e.target,
+          /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
+          'Invalid date format (must be MM/DD/YYYY).'
+        );
+        break;
+      case 'business-phone':
+      case 'applicant-home-phone':
+      case 'applicant2-home-phone':
+        validateInput(e.target, /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/, 'Invalid phone number.');
+        break;
+    }
   });
 
   fillPdfBtn.addEventListener('click', async () => {
@@ -250,7 +287,17 @@ const initializeApp = async () => {
   });
 
   downloadBtn.addEventListener('click', async () => {
-    const pdfBytes = await pdfDoc.save();
+    let currentPdfDoc = pdfDoc;
+    if (pdfTemplatesColumn.style.display === 'block') {
+      currentPdfDoc = templatePdfDoc;
+    }
+
+    if (!currentPdfDoc) {
+      alert('No PDF document is available for download.');
+      return;
+    }
+
+    const pdfBytes = await currentPdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -534,41 +581,6 @@ const initializeApp = async () => {
     }
   }
 
-  form.addEventListener('input', (e) => {
-    switch (e.target.id) {
-      case 'email-address':
-      case 'applicant-business-email':
-      case 'applicant2-business-email':
-      case 'cardholder1-business-email':
-      case 'cardholder2-business-email':
-      case 'cardholder3-business-email':
-        validateInput(e.target, /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email address.');
-        break;
-      case 'applicant-ssn':
-      case 'applicant2-ssn':
-      case 'cardholder1-ssn':
-      case 'cardholder2-ssn':
-      case 'cardholder3-ssn':
-        validateInput(e.target, /^\d{3}-\d{2}-\d{4}$/, 'Invalid SSN (must be XXX-XX-XXXX).');
-        break;
-      case 'applicant-dob':
-      case 'applicant2-dob':
-      case 'cardholder1-dob':
-      case 'cardholder2-dob':
-      case 'cardholder3-dob':
-        validateInput(
-          e.target,
-          /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
-          'Invalid date format (must be MM/DD/YYYY).'
-        );
-        break;
-      case 'business-phone':
-      case 'applicant-home-phone':
-      case 'applicant2-home-phone':
-        validateInput(e.target, /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/, 'Invalid phone number.');
-        break;
-    }
-  });
 
   function loadSavedData() {
     const savedData = localStorage.getItem('savedFormData');
