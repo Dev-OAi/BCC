@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <base href="/BCC/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Business Credit Card Application</title>
@@ -52,8 +53,6 @@
           <ul>
             <li><a href="#" id="home-btn" data-i18n="home">Home</a></li>
             <li><a href="#" id="pdf-templates-btn">PDF Templates</a></li>
-            <li><a href="#" id="product-finder-btn">Product Finder</a></li>
-            <li><a href="#" id="account-finder-btn">Account Finder</a></li>
             <li><a href="#" data-i18n="applications">Applications</a></li>
             <li><a href="#" data-i18n="settings">Settings</a></li>
             <li><a href="#" data-i18n="help">Help</a></li>
@@ -1033,63 +1032,6 @@
           <button id="process-pdf-btn">Process PDF</button>
           <canvas id="pdf-preview" style="max-width: 100%; margin-top: 10px"></canvas>
           <form id="dynamic-form"></form>
-        </div>
-        <div id="product-finder-column" class="form-column" style="display: none;">
-          <h2>CLIENT RELATIONSHIP BUILDER</h2>
-          <p>Find your perfect product.</p>
-          <form id="product-finder-form">
-            <fieldset>
-              <legend>Product Finder</legend>
-              <div class="tooltip">
-                <label for="business-type-select">Type of Business</label>
-                <select id="business-type-select" name="business-type-select">
-                  <option value="retail">Retail</option>
-                  <option value="service">Service</option>
-                  <option value="manufacturing">Manufacturing</option>
-                </select>
-              </div>
-              <div class="tooltip">
-                <label for="business-revenue">Annual Revenue</label>
-                <input type="number" id="business-revenue" name="business-revenue" />
-              </div>
-              <div class="tooltip">
-                <label for="transaction-volume">Monthly Transaction Volume</label>
-                <input type="number" id="transaction-volume" name="transaction-volume" />
-              </div>
-              <button type="button" id="find-product-btn">Find Product</button>
-            </fieldset>
-          </form>
-          <div id="product-recommendation"></div>
-        </div>
-        <div id="account-finder-column" class="form-column" style="display: none;">
-          <h2>Account Finder</h2>
-          <p>Browse our products and their features.</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Features</th>
-                <th>Points per Dollar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Platinum Business Suite</td>
-                <td>Travel Insurance, Airport Lounge Access, Concierge Service</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>Gold Business Package</td>
-                <td>Cash Back, Extended Warranty</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>Silver Business Essentials</td>
-                <td>No Annual Fee, Basic Rewards</td>
-                <td>1</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </main>
 

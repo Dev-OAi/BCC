@@ -26,12 +26,8 @@ const initializeApp = async () => {
   // Navigation elements
   const homeBtn = document.getElementById('home-btn');
   const pdfTemplatesBtn = document.getElementById('pdf-templates-btn');
-  const productFinderBtn = document.getElementById('product-finder-btn');
-  const accountFinderBtn = document.getElementById('account-finder-btn');
   const formColumn = document.getElementById('form-column');
   const pdfTemplatesColumn = document.getElementById('pdf-templates-column');
-  const productFinderColumn = document.getElementById('product-finder-column');
-  const accountFinderColumn = document.getElementById('account-finder-column');
   const pdfUpload = document.getElementById('pdf-upload');
   const processPdfBtn = document.getElementById('process-pdf-btn');
   const pdfPreview = document.getElementById('pdf-preview');
@@ -52,55 +48,14 @@ const initializeApp = async () => {
 
   let pdfDoc, templatePdfDoc;
 
-  homeBtn.addEventListener('click', (e) => {
-    e.preventDefault();
+  homeBtn.addEventListener('click', () => {
     formColumn.style.display = 'block';
     pdfTemplatesColumn.style.display = 'none';
-    productFinderColumn.style.display = 'none';
-    accountFinderColumn.style.display = 'none';
   });
 
-  pdfTemplatesBtn.addEventListener('click', (e) => {
-    e.preventDefault();
+  pdfTemplatesBtn.addEventListener('click', () => {
     formColumn.style.display = 'none';
     pdfTemplatesColumn.style.display = 'block';
-    productFinderColumn.style.display = 'none';
-    accountFinderColumn.style.display = 'none';
-  });
-
-  productFinderBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    formColumn.style.display = 'none';
-    pdfTemplatesColumn.style.display = 'none';
-    productFinderColumn.style.display = 'block';
-    accountFinderColumn.style.display = 'none';
-  });
-
-  accountFinderBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    formColumn.style.display = 'none';
-    pdfTemplatesColumn.style.display = 'none';
-    productFinderColumn.style.display = 'none';
-    accountFinderColumn.style.display = 'block';
-  });
-
-  const findProductBtn = document.getElementById('find-product-btn');
-  findProductBtn.addEventListener('click', () => {
-    const businessType = document.getElementById('business-type-select').value;
-    const businessRevenue = document.getElementById('business-revenue').value;
-    const transactionVolume = document.getElementById('transaction-volume').value;
-    const productRecommendation = document.getElementById('product-recommendation');
-
-    let recommendation = '';
-    if (businessRevenue > 1000000 && transactionVolume > 1000) {
-      recommendation = 'Platinum Business Suite';
-    } else if (businessRevenue > 500000 || transactionVolume > 500) {
-      recommendation = 'Gold Business Package';
-    } else {
-      recommendation = 'Silver Business Essentials';
-    }
-
-    productRecommendation.innerHTML = `<h3>Recommended Product:</h3><p>${recommendation}</p>`;
   });
 
   if (window.pdfjsLib) {
