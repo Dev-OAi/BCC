@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <base href="/BCC/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Business Credit Card Application</title>
@@ -15,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="product_data.js"></script>
   </head>
   <body>
     <div class="app-shell">
@@ -29,13 +29,10 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="header-title">
-          <h1 data-i18n="appTitle">Business Credit Card Application</h1>
+          <h1>ValleyHub Docs</h1>
         </div>
         <div class="header-controls">
-            <button type="button" id="fill-pdf-btn" data-i18n="fillPdf">Fill PDF</button>
-            <button type="button" id="download-btn" data-i18n="downloadPdf">Download PDF</button>
-            <button type="button" id="reset-btn" data-i18n="resetForm">Reset Form</button>
-            <button type="button" id="save-email-btn" data-i18n="saveAndEmail">Save and Email</button>
+          <input type="search" placeholder="Search" />
           <button
             id="right-sidebar-toggle"
             class="sidebar-toggle"
@@ -43,19 +40,37 @@
             aria-controls="right-sidebar"
             aria-expanded="false"
           >
-            <i class="fas fa-file-pdf"></i>
+            <i class="fas fa-cog"></i>
           </button>
         </div>
       </header>
 
       <aside id="left-sidebar" class="sidebar" role="region" aria-labelledby="left-sidebar-toggle">
         <nav>
+          <input type="search" placeholder="Filter pages..." />
           <ul>
-            <li><a href="#" id="home-btn" data-i18n="home">Home</a></li>
-            <li><a href="#" id="pdf-templates-btn">PDF Templates</a></li>
-            <li><a href="#" data-i18n="applications">Applications</a></li>
-            <li><a href="#" data-i18n="settings">Settings</a></li>
-            <li><a href="#" data-i18n="help">Help</a></li>
+            <li><a href="#" id="home-btn">Home</a></li>
+            <li>
+              <a href="#">TOOLS</a>
+              <ul>
+                <li><a href="#" id="afinder-btn">Account Finder</a></li>
+                <li><a href="#">Manager's Code Snippet</a></li>
+                <li><a href="#" id="sales-log-btn">Daily Sales Activity Log</a></li>
+                <li><a href="#" id="point-grid-btn">Product/Service Grid</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">RESOURCES</a>
+              <ul>
+                <li><a href="#">View Pitchbook</a></li>
+                <li><a href="#">Pitchbook Home</a></li>
+              </ul>
+            </li>
+            <li><a href="#">QUICKSTART</a></li>
+            <li><a href="#">SET UP SITE WITH JEKYLL</a></li>
+            <li><a href="#">ValleyHub Pages & Jekyll</a></li>
+            <li><a href="#">CONFIGURE A CUSTOM DOMAIN</a></li>
+            <li><a href="#">Custom domain setup</a></li>
           </ul>
         </nav>
       </aside>
@@ -1018,7 +1033,6 @@
 
             <div class="buttons">
               <button type="button" id="fill-pdf-btn" data-i18n="fillPdf">Fill PDF</button>
-
               <button type="button" id="download-btn" data-i18n="downloadPdf">Download PDF</button>
               <button type="button" id="reset-btn" data-i18n="resetForm">Reset Form</button>
               <button type="button" id="save-email-btn" data-i18n="saveAndEmail">Save and Email</button>
@@ -1033,6 +1047,97 @@
           <canvas id="pdf-preview" style="max-width: 100%; margin-top: 10px"></canvas>
           <form id="dynamic-form"></form>
         </div>
+        <div id="product-finder-column" class="form-column" style="display: none;">
+          <h2>CLIENT RELATIONSHIP BUILDER</h2>
+          <p>Find your perfect product.</p>
+          <form id="product-finder-form">
+            <fieldset>
+              <legend>Product Finder</legend>
+              <div class="tooltip">
+                <label for="business-type-select">Type of Business</label>
+                <select id="business-type-select" name="business-type-select">
+                  <option value="retail">Retail</option>
+                  <option value="service">Service</option>
+                  <option value="manufacturing">Manufacturing</option>
+                </select>
+              </div>
+              <div class="tooltip">
+                <label for="business-revenue">Annual Revenue</label>
+                <input type="number" id="business-revenue" name="business-revenue" />
+              </div>
+              <div class="tooltip">
+                <label for="transaction-volume">Monthly Transaction Volume</label>
+                <input type="number" id="transaction-volume" name="transaction-volume" />
+              </div>
+              <button type="button" id="find-product-btn">Find Product</button>
+            </fieldset>
+          </form>
+          <div id="product-recommendation"></div>
+        </div>
+        <div id="account-finder-column" class="form-column" style="display: none;">
+          <h2>Account Finder</h2>
+          <p>Browse our products and their features.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Features</th>
+                <th>Points per Dollar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Platinum Business Suite</td>
+                <td>Travel Insurance, Airport Lounge Access, Concierge Service</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>Gold Business Package</td>
+                <td>Cash Back, Extended Warranty</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Silver Business Essentials</td>
+                <td>No Annual Fee, Basic Rewards</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="point-grid-column" class="form-column" style="display: none;">
+          <h2>Retail Banking - Point Grid</h2>
+          <div id="point-grid-container"></div>
+        </div>
+        <div id="sales-log-content" class="form-column" style="display: none;">
+          <h2>Daily Sales Activity Log</h2>
+          <form id="sales-log-form">
+            <fieldset>
+              <legend>Log an Activity</legend>
+              <div class="tooltip">
+                <label for="activity-type">Activity Type</label>
+                <select id="activity-type" name="activity-type">
+                  <option value="call">Call</option>
+                  <option value="email">Email</option>
+                  <option value="meeting">Meeting</option>
+                </select>
+              </div>
+              <div class="tooltip">
+                <label for="client-name">Client Name</label>
+                <input type="text" id="client-name" name="client-name" />
+              </div>
+              <div class="tooltip">
+                <label for="notes">Notes</label>
+                <textarea id="notes" name="notes" rows="4"></textarea>
+              </div>
+              <button type="button" id="log-activity-btn">Log Activity</button>
+            </fieldset>
+          </form>
+          <div id="sales-log-display"></div>
+          </div>
+        <div id="afinder-content" class="form-column" style="display: none;">
+          <h2>Account Finder</h2>
+          <div id="afinder-table"></div>
+        </div>
       </main>
 
       <aside
@@ -1041,17 +1146,19 @@
         role="region"
         aria-labelledby="right-sidebar-toggle"
       >
-        <div class="pdf-column" id="pdf-column">
-          <div style="position: relative;">
-            <img id="pdf-image" style="width: 100%;" />
-            <div id="pdf-overlays"></div>
-          </div>
-          <iframe
-            id="pdf-viewer"
-            frameborder="0"
-            title="PDF viewer for the credit card application"
-            style="display: none;"
-          ></iframe>
+        <div class="toc-column">
+          <h3>ON THIS PAGE</h3>
+          <nav>
+            <ul>
+              <li><a href="#">Retail Banking - Point Grid</a></li>
+              <li><a href="#">GROSS DEPOSITS</a></li>
+              <li><a href="#">LOAN REFERRALS</a></li>
+              <li><a href="#">NEW CIF GROWTH</a></li>
+              <li><a href="#">NEW DIGITAL ENROLLMENTS</a></li>
+              <li><a href="#">PARTNER REFERRALS</a></li>
+              <li><a href="#">TREASURY SOLUTIONS PRODUCTS/SERVICES</a></li>
+            </ul>
+          </nav>
         </div>
       </aside>
 

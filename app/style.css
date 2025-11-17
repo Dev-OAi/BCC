@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #4a90e2;
-  --background-color: #f0f2f5;
+  --primary-color: #007bff;
+  --background-color: #f8f9fa;
   --card-background-color: #ffffff;
-  --text-color: #333;
-  --label-color: #555;
-  --border-color: #dce1e6;
+  --text-color: #212529;
+  --label-color: #495057;
+  --border-color: #dee2e6;
   --shadow-color: rgba(0, 0, 0, 0.1);
-  --font-family: 'Inter', sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --header-height: 60px;
   --sidebar-width: 280px;
   --hover-color: #e9ecef;
@@ -47,27 +47,17 @@ body {
   z-index: 1000;
 }
 
-.header-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-}
-
 .header-title h1 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin: 0;
-  color: var(--primary-color);
-  white-space: nowrap;
+  font-weight: 600;
 }
 
-#language-switcher select {
-  background: none;
+.header-controls input[type="search"] {
+  width: 300px;
+  padding: 0.5rem;
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  padding: 5px;
-  color: var(--text-color);
-  font-family: var(--font-family);
 }
 
 .header-controls {
@@ -114,7 +104,15 @@ body {
 }
 
 #left-sidebar nav {
-  padding-top: 1rem;
+  padding: 1rem;
+}
+
+#left-sidebar input[type="search"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-bottom: 1rem;
 }
 
 #left-sidebar ul {
@@ -124,18 +122,44 @@ body {
 }
 
 #left-sidebar li a {
-  display: flex;
-  align-items: center;
-  padding: 1rem 1.5rem;
+  display: block;
+  padding: 0.5rem 1rem;
   text-decoration: none;
   color: var(--text-color);
-  font-weight: 500;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.2s;
+  border-radius: 4px;
 }
 
 #left-sidebar li a:hover {
   background-color: var(--hover-color);
+}
+
+#left-sidebar ul ul {
+  padding-left: 1rem;
+}
+
+.toc-column {
+  padding: 1rem;
+}
+
+.toc-column h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--label-color);
+  margin-bottom: 0.5rem;
+}
+
+.toc-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-column li a {
+  display: block;
+  padding: 0.25rem 0;
+  text-decoration: none;
+  color: var(--text-color);
 }
 
 #main-content {
@@ -179,6 +203,7 @@ body {
 }
 
 .form-column {
+  display: none; /* Hide all sections by default */
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
@@ -450,4 +475,21 @@ input.invalid {
   color: #333;
   text-decoration: none;
   cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+th {
+  background-color: var(--background-color);
+  font-weight: 600;
 }
