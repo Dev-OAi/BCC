@@ -21,7 +21,6 @@ const path = require('path');
     await page.screenshot({ path: screenshotPath });
 
     console.log(`Screenshot saved to ${screenshotPath}`);
-
   } catch (error) {
     console.error('Error during verification:', error);
     process.exit(1);

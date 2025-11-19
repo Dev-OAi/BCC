@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ValleyHub Docs Clone</title>
+    <link rel="icon" type="image/png" href="/assets/cb-345/images/site/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* style.css */
+
+        /* --- CSS Reset --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body, h1, h2, h3, p, ul, ol, li, button, input {
+            margin: 0;
+            padding: 0;
+            font-family: inherit;
+        }
+        ul, ol {
+            list-style: none;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: inherit;
+            font-family: inherit;
+        }
+        input {
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+
+        /* --- Global Variables --- */
+        html[data-theme="dark"] {
+            /* GitHub Docs DARK Theme Color Palette (based on reference image) */
+            --color-bg-primary: #0d1117; /* Dark background for body, header, sidebar */
+            --color-bg-secondary: #161b22; /* Slightly lighter dark for code blocks, footer */
+            --color-bg-tertiary: #21262d; /* For active sidebar links, search input background */
+            --color-text-primary: #c9d1d9; /* Main light text */
+            --color-text-secondary: #8b949e; /* Muted grey for secondary text */
+            --color-border-light: #30363d; /* Dark theme borders */
+            --color-accent-blue: #58a6ff; /* GitHub blue for links/active states */
+            --color-accent-blue-hover: #79c0ff; /* Lighter blue on hover */
+            --color-input-bg: #21262d; /* Search input background */
+            --color-input-border: #30363d; /* Search input border */
+            --color-shadow-light: rgba(0, 0, 0, 0.4); /* Darker shadow */
+            --color-active-link-bg: #21262d; /* Background for active sidebar link */
+            --color-active-link-text: #c9d1d9; /* Text color for active link */
+            --color-active-link-arrow: #58a6ff; /* Color for the active link arrow */
+            --color-toc-active-blue: #58a6ff; /* Blue color for active TOC link */
+            --color-toc-active-bg: rgba(88, 166, 255, 0.1); /* Light blue background for active TOC */
+            --color-note-bg: #30363d; /* Background for note boxes */
+            --color-note-border: #315185; /* Border for note boxes */
+            --header-height: 64px; /* Header height to match reference */
+            --color-scrollbar-thumb: #30363d;
+            --color-scrollbar-thumb-hover: #4a5361;
+        }
+
+        /* Light theme variables */
+        html, /* Default to light theme */
+        html[data-theme="light"] {
+            --color-bg-primary: #ffffff;
+            --color-bg-secondary: #f6f8fa;
+            --color-bg-tertiary: #f1f3f5;
+            --color-text-primary: #24292f;
+            --color-text-secondary: #57606a;
+            --color-border-light: #d0d7de;
+            --color-accent-blue: #0969da;
+            --color-accent-blue-hover: #0a7ffb;
+            --color-input-bg: #f6f8fa;
+            --color-input-border: #d0d7de;
+            --color-shadow-light: rgba(140, 149, 159, 0.3);
+            --color-active-link-bg: #f1f3f5;
+            --color-active-link-text: #24292f;
+            --color-active-link-arrow: #0969da;
+            --color-toc-active-blue: #0969da;
+            --color-toc-active-bg: rgba(9, 105, 218, 0.1);
+            --color-note-bg: #f1f3f5;
+            --color-note-border: #f6f8fa;
+            --header-height: 64px;
+            --color-scrollbar-thumb: #f1f2f3; /* gray-300 from a typical palette */
+            --color-scrollbar-thumb-hover: #aeb9c5; /* a bit darker for hover */
+        }
+
+        /* --- Settings Dropdown --- */
+        .settings-container {
+            position: relative;
+        }
+
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: transparent;
+            border: 1px solid transparent;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+
+        .settings-toggle:hover {
+            background-color: var(--color-bg-tertiary);
+        }
+
+        .settings-toggle[aria-expanded="true"] {
+            background-color: var(--color-bg-tertiary);
+            border-color: var(--color-input-border);
+        }
+
+        .settings-toggle svg {
+            stroke: var(--color-text-secondary);
+        }
+
+        .settings-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 210px; /* Adjusted width for horizontal buttons */
+            background-color: var(--color-bg-primary);
+            border: 1px solid var(--color-border-light);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px var(--color-shadow-light);
+            z-index: 1010;
+            padding: 8px;
+        }
+
+        .dropdown-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            padding: 4px 8px;
+            display: block;
+        }
+
+        .theme-options {
+            display: flex; /* This makes the list items horizontal */
+            gap: 4px;     /* This adds space between the buttons */
+        }
+
+        .theme-options li {
+            flex: 1 1 0; /* This makes each button take up equal space */
+        }
+
+        .theme-option {
+            width: 100%;
+            text-align: center;
+            padding: 6px 8px;
+            font-size: 13px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .theme-option:hover {
+            background-color: var(--color-bg-tertiary);
+        }
+
+        .theme-option.active {
+            /* This applies the semi-transparent background when active */
+            background-color: var(--color-toc-active-bg);
+        }
+
+        .theme-option.active::after {
+            content: '✔';
+            color: var(--color-accent-blue);
+            font-weight: bold;
+        }
+
+
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- Custom Scrollbar Styling --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--color-scrollbar-thumb);
+            border-radius: 4px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--color-scrollbar-thumb-hover);
+        }
+
+        /* For Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-scrollbar-thumb) transparent;
+        }
+
+        /* --- Header --- */
+        .site-header {
+            background-color: var(--color-bg-primary);
+            border-bottom: 1px solid var(--color-border-light);
+            height: var(--header-height);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        /* Header Inner Layout */
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 16px;
+        }
+
+        /* New group for left-aligned header items */
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            background-color: transparent;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        .menu-toggle svg {
+            stroke: var(--color-text-primary);
+            width: 24px;
+            height: 24px;
+        }
+
+        .menu-toggle:hover {
+            background-color: var(--color-bg-tertiary);
+            border-radius: 6px;
+        }
+
+        /* Site Logo */
+        .site-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            flex-shrink: 0;
+        }
+
+        /* Header Search Box */
+        .header-search {
+            flex-grow: 1;
+            flex-shrink: 1;
+            max-width: 800px;
+            margin: 0 16px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-search input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: 1px solid var(--color-input-border);
+            border-radius: 6px;
+            background-color: var(--color-input-bg);
+            color: var(--color-text-primary);
+            font-size: 14px;
+            line-height: 20px;
+            transition: border-color 0.2s ease-in-out;
+                flex-grow: 1;
+                flex-shrink: 1;
+                max-width: 800px;
+                margin: 0 16px;
+                position: relative;
+                display: flex;
+                align-items: center;
+        }
+
+        .header-search input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .header-search input:focus {
+            border-color: var(--color-accent-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.25);
+        }
+
+        .header-search .search-button {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            pointer-events: none;
+
+        }
+
+        .header-search .search-button::before {
+        /*  content: '🔍';  Simple magnifying glass emoji as placeholder */
+            font-size: 16px;
+
+        }
+
+        /* Version Selector */
+        .header-version-selector {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            margin-left: 16px;
+        }
+
+        /* Empty container to balance the flex layout */
+        .header-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .header-version-selector:hover {
+            background-color: var(--color-bg-tertiary);
+        }
+
+        .header-version-selector svg {
+            stroke: var(--color-text-secondary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* --- Main Layout --- */
+        .main-layout {
+            display: flex;
+            width: 100%;
+            flex: 1;
+            height: calc(100vh - var(--header-height));
+            overflow: hidden;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 256px;
+            flex-shrink: 0;
+            padding: 24px 0 24px 24px;
+            border-right: 1px solid var(--color-border-light);
+            background-color: var(--color-bg-primary);
+            position: sticky;
+            top: var(--header-height);
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        /* Sidebar Header */
+        .sidebar-header {
+            padding-right: 24px;
+            padding-bottom: 8px;
+        }
+
+        .sidebar-header .sidebar-link {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+            /* Sidebar Search Box */
+            .sidebar-search {
+                position: relative;
+                margin-top: 16px;
+            }
+
+            .sidebar-search input {
+                width: 100%;
+                padding: 6px 10px 6px 32px; /* Space for icon on the left */
+                border: 1px solid var(--color-input-border);
+                border-radius: 6px;
+                background-color: var(--color-input-bg);
+                color: var(--color-text-primary);
+                font-size: 13px;
+                line-height: 20px;
+                transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            }
+
+            .sidebar-search input::placeholder {
+                color: var(--color-text-secondary);
+            }
+
+            .sidebar-search input:focus {
+                border-color: var(--color-accent-blue);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.25);
+            }
+
+            .sidebar-search .search-icon {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--color-text-secondary);
+                pointer-events: none;
+            }
+
+            /* Highlight for search results */
+            .highlight {
+                background-color: rgba(88, 166, 255, 0.3); /* A light blue background */
+                color: var(--color-text-primary); /* Keep text color */
+                border-radius: 3px;
+                padding: 0 2px;
+            }
+
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            padding-right: 24px;
+        }
+
+        .sidebar-nav ul {
+            margin-bottom: 16px;
+        }
+
+        .sidebar-nav ul:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Category Titles */
+        .sidebar-category-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            padding: 0 8px;
+        }
+
+        /* Divider */
+        .sidebar-divider {
+            border-top: 1px solid var(--color-border-light);
+            margin: 8px 0;
+        }
+
+        /* Sidebar Links */
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-text-primary);
+            border-radius: 6px;
+            position: relative;
+            transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+        }
+
+        .sidebar-link:hover {
+            background-color: var(--color-bg-tertiary);
+            color: var(--color-accent-blue-hover);
+        }
+
+        .sidebar-link.active {
+
+            color: var(--color-active-link-text);
+            font-weight: 500;
+        }
+
+        .sidebar-link.active .active-arrow {
+            position: absolute;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid var(--color-active-link-arrow);
+            transform: translateY(2px);
+        }
+
+        /* Collapsible Sections */
+        .sidebar-section {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+            list-style: none;
+            border-radius: 6px;
+        }
+
+        .sidebar-section-title::-webkit-details-marker {
+            display: none;
+        }
+
+        .sidebar-section-title::marker {
+            display: none;
+        }
+
+        .sidebar-section-title:hover {
+            background-color: var(--color-bg-tertiary);
+            color: var(--color-accent-blue-hover);
+        }
+
+        .sidebar-section-title::after {
+            content: '▼';
+            font-size: 0.7em;
+            color: var(--color-text-secondary);
+            transition: transform 0.2s ease-in-out;
+            margin-left: 8px;
+        }
+
+        .sidebar-section > details[open] > .sidebar-section-title::after {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-subsection-list {
+            margin-top: 4px;
+            padding-left: 24px;
+            border-left: 1px solid var(--color-border-light);
+            margin-left: 12px;
+            padding-bottom: 8px;
+        }
+
+        .sidebar-subsection-list li {
+            margin-bottom: 4px;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex-grow: 1;
+            flex-shrink: 1;
+            min-width: 0;
+            /* Add extra padding-bottom to ensure last headings can be scrolled past the activation point */
+            padding: 32px 48px 50vh 32px;
+            background-color: var(--color-bg-primary);
+            overflow-y: auto;
+        }
+
+        .main-content h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            color: var(--color-text-primary);
+        }
+
+        .main-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--color-border-light);
+            color: var(--color-text-primary);
+        }
+
+        .main-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: var(--color-text-primary);
+        }
+
+        .main-content p {
+            font-size: 16px;
+            line-height: 1.75;
+            margin-bottom: 16px;
+            color: var(--color-text-primary);
+        }
+
+        .main-content pre {
+            background-color: var(--color-bg-secondary);
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 14px;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            color: var(--color-text-primary);
+        }
+
+        .main-content code {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 14px;
+            background-color: var(--color-bg-secondary);
+            padding: 2px 4px;
+            border-radius: 6px;
+            color: var(--color-text-primary);
+        }
+
+        /* Note Box Styling */
+        .main-content .note {
+            background-color: var(--color-note-bg);
+            border-left: 4px solid var(--color-note-border);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .main-content .note p {
+            margin: 0;
+        }
+
+        .main-content .note strong {
+            color: var(--color-text-primary);
+        }
+
+        /* --- Table of Contents (TOC) --- */
+        .toc-container {
+            width: 256px;
+            flex-shrink: 0;
+            padding: 32px 24px 24px 16px;
+            background-color: var(--color-bg-primary);
+            position: sticky;
+            top: var(--header-height);
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            z-index: 900;
+            border-left: 1px solid var(--color-border-light);
+
+
+        }
+
+        .toc-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-border-light);
+            margin-bottom: 20px;
+            padding-left: 8px;
+        }
+
+        .toc-nav ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+
+        .toc-nav li {
+            margin-bottom: 4px;
+        }
+
+        .toc-nav a {
+            display: block;
+            padding: 6px 8px;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+            border-radius: 4px;
+            position: relative;
+            border-left: 2px solid transparent;
+        }
+
+        .toc-nav a:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        .toc-nav a.active {
+            color: var(--color-toc-active-blue);
+            background-color: var(--color-toc-active-bg);
+            font-weight: 500;
+            border-left-color: var(--color-toc-active-blue);
+
+        }
+
+        .toc-nav a.active:hover {
+            color: var(--color-toc-active-blue);
+            background-color: var(--color-toc-active-bg);
+        }
+
+        .toc-nav ul ul {
+            padding-left: 16px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+
+        /* New TOC style for nested (H3) links */
+        .toc-nested {
+            padding-left: 16px;
+        }
+
+
+        .toc-meta {
+            padding-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 8px;
+        }
+
+        .toc-meta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            transition: color 0.15s ease-in-out;
+            padding: 4px 0;
+        }
+
+        .toc-meta-link:hover {
+            color: var(--color-text-primary);
+        }
+
+        .toc-meta-link.scroll-to-top svg {
+            stroke: var(--color-text-secondary);
+            transition: stroke 0.15s ease-in-out;
+        }
+
+        .toc-meta-link.scroll-to-top:hover svg {
+            stroke: var(--color-text-primary);
+        }
+
+        /* --- Recommendation Tool --- */
+        .recommendation-tool-container {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 32px;
+            margin-bottom: 32px;
+            box-shadow: #161b22 0px 10px 38px -10px, rgba(0, 0, 0, 0.24) 0px 10px 20px -15px        ;
+        }
+
+        .recommendation-tool-container h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .recommendation-tool-container p {
+            margin-bottom: 24px;
+            color: var(--color-text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--color-input-border);
+            border-radius: 6px;
+            background-color: var(--color-input-bg);
+            color: var(--color-text-primary);
+            font-size: 14px;
+            line-height: 20px;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            /* Custom select arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--color-accent-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-toc-active-bg);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end; /* Align buttons to the right */
+            gap: 12px; /* Space between buttons */
+            margin-top: 24px; /* Space above buttons */
+        }
+
+        .btn-submit {
+            background-color: var(--color-accent-blue);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--color-accent-blue-hover);
+        }
+
+        .btn-reset {
+            background-color: transparent;
+            color: var(--color-text-secondary); /* Muted text color */
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 16px;
+            border: 1px solid var(--color-border-light); /* Light border */
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+
+        .btn-reset:hover {
+            background-color: var(--color-bg-tertiary); /* Slightly darker background on hover */
+            color: var(--color-text-primary); /* Darker text on hover */
+            border-color: var(--color-input-border); /* Darker border on hover */
+        }
+
+        .recommendation-result {
+            margin-top: 24px;
+            padding: 20px;
+            background-color: var(--color-note-bg);
+            border-left: 4px solid var(--color-note-border);
+            border-right: 4px solid var(--color-note-border);
+            border-radius: 6px;
+        }
+
+        .recommendation-result h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .recommendation-result p {
+            margin-bottom: 0;
+            color: var(--color-text-primary);
+        }
+
+        .recommendation-result .recommendation-intro {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+        }
+
+        .recommendation-result .recommendation-description {
+            margin-top: 8px;
+            margin-bottom: 16px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .recommendation-result .recommendation-features-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+        }
+
+        .recommendation-result .recommendation-features-list {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 0;
+            color: var(--color-text-secondary);
+        }
+
+        .recommendation-result .recommendation-features-list li {
+            margin-bottom: 4px;
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background-color: var(--color-bg-secondary);
+            border-top: 1px solid var(--color-border-light);
+            padding: 24px;
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 1012px) {
+            .toc-container {
+                display: none;
+            }
+
+            .main-content {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-inner {
+                padding: 0 8px;
+            }
+
+            .menu-toggle {
+                display: flex;
+                padding: 8px;
+                margin-right: 4px;
+            }
+
+            .site-logo {
+                font-size: 16px;
+                margin-right: 8px;
+            }
+
+            .header-search {
+                flex-grow: 1;
+                flex-shrink: 1;
+                max-width: none;
+                margin: 0 4px;
+            }
+
+            .header-search input {
+                padding: 6px 28px 6px 10px;
+                font-size: 13px;
+            }
+
+            .header-version-selector {
+                padding: 8px;
+                font-size: 13px;
+            }
+
+            .main-layout {
+                flex-direction: column;
+                padding: 0;
+                /* This was causing a double-header issue on mobile */
+                /* margin-top: var(--header-height); */
+                height: calc(100vh - var(--header-height));
+                overflow: hidden;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                overflow-y: auto;
+                background-color: var(--color-bg-primary);
+                border-right: 1px solid var(--color-border-light);
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
+                z-index: 1002;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                padding: 16px 24px 24px 16px;
+            }
+
+            .sidebar.is-open {
+                transform: translateX(0);
+            }
+
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 1001;
+            }
+
+            .mobile-menu-overlay.is-visible {
+                display: block;
+            }
+
+            .sidebar-header {
+                padding-top: 0;
+                padding-right: 0;
+                padding-bottom: 8px;
+            }
+
+            .sidebar-nav {
+                padding-right: 0;
+            }
+
+            .main-content {
+                padding: 16px;
+                height: 100%;
+                overflow-y: auto;
+            }
+
+            body.no-scroll {
+                overflow: hidden;
+            }
+        }
+
+        @media (max-width: 544px) {
+            .header-search {
+                /* Shrink the search bar on very small screens */
+                max-width: 180px;
+            }
+
+            .header-search input {
+                font-size: 12px;
+                padding: 6px 24px 6px 8px;
+            }
+
+            .header-version-selector {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            .main-content {
+                padding: 12px;
+            }
+        }
+
+         /* Optional: Add some basic styling for the link */
+        .edit-page-link {
+            display: block; /* Makes it take up full width for easier clicking */
+            text-align: right; /* Aligns to the right */
+            padding: 10px;
+            /* background-color: #f0f0f0; /* Light grey background */
+            border-bottom: 1px solid #ccc;
+            font-family: sans-serif;
+            font-size: 0.9em;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 20px; /* Space below the link */
+        }
+        .edit-page-link:hover {
+            background-color: #e0e0e0; /* Darker on hover */
+        }
+
+
+
+        /* Custom styles for sticky table headers and smooth transitions */
+        th.sticky-left, td.sticky-left {
+            position: sticky;
+            left: 0;
+            background: inherit; /* Will inherit from parent, e.g., thead or tbody */
+            z-index: 10; /* Ensure it's above other cells but below sticky header if needed */
+        }
+        thead th.sticky-left {
+            z-index: 20; /* Higher z-index for header cells */
+        }
+        .option-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .option-card.selected {
+            border-color: #2563eb; /* blue-600 */
+            background-color: #eff6ff; /* blue-50 */
+            box-shadow: 0 0 0 2px #2563eb; /* Ring effect */
+        }
+        /* Added for questionnaire sidebar list items */
+        .sidebar-item {
+            cursor: pointer;
+            padding: 0.75rem 1rem; /* p-3 px-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            margin-bottom: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+            display: flex; /* For icon alignment */
+            align-items: center;
+        }
+        .sidebar-item:hover {
+            background-color: #e0e7ff; /* blue-100 */
+        }
+        .sidebar-item.selected {
+            background-color: #bfdbfe; /* blue-200 */
+            font-weight: 600; /* semibold */
+            color: #1d4ed8; /* blue-700 */
+        }
+        .sidebar-item.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #f3f4f6; /* gray-100 */
+            color: #9ca3af; /* gray-400 */
+        }
+
+        /* Snackbar specific styles */
+        #snackbar-container {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000; /* Ensure it's on top */
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+        .snackbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .snackbar.show {
+            opacity: 1;
+        }
+        /* Navigation Drawer Styles (Compact Screens) */
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            left: -300px; /* Start off-screen */
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1050;
+            transition: left 0.3s ease-in-out;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-drawer.open {
+            left: 0;
+        }
+        .nav-drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0s 0.3s;
+        }
+        .nav-drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .nav-drawer-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+        }
+        .nav-drawer-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+        .nav-drawer-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            color: #374151; /* gray-700 */
+            font-weight: 500; /* medium */
+            transition: background-color 0.2s, color 0.2s;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+        }
+        .nav-drawer-item:hover, .nav-drawer-item.active {
+            background-color: #e0e7ff; /* blue-100 */
+            color: #1d4ed8; /* blue-700 */
+        }
+        .nav-drawer-item svg {
+            margin-right: 0.75rem;
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+        }
+
+        /* Navigation Rail Styles (Medium+ Screens) */
+        #nav-rail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background-color: #f0f4f9; /* Material You surface - slightly off-white/light blueish gray */
+            width: 80px; /* Collapsed width */
+            padding-top: 8px; /* Reduced top padding */
+            display: none; /* Hidden by default, shown by media query */
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000; /* Below drawer overlay if both were somehow visible */
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid #dde3ea; /* Softer border */
+        }
+        #nav-rail.expanded {
+            width: 256px;
+            align-items: flex-start; /* Align items to start when expanded */
+        }
+
+        .nav-rail-toggle-container { /* Container for the toggle button */
+            width: 100%;
+            display: flex;
+            justify-content: flex-start; /* Align button to the left */
+            padding: 0 16px; /* Horizontal padding for the button */
+            margin-bottom: 12px; /* Space below toggle */
+            box-sizing: border-box;
+        }
+
+        .nav-rail-toggle-button {
+            background: none;
+            border: none;
+            padding: 12px; /* Clickable area */
+            cursor: pointer;
+            color: #43484E; /* On-surface-variant */
+            border-radius: 50%;
+        }
+         .nav-rail-toggle-button:hover {
+            background-color: rgba(0,0,0,0.04);
+        }
+
+
+        .nav-rail-item {
+            display: flex;
+            align-items: center;
+            width: 56px; /* Fixed width for collapsed item container */
+            height: 56px; /* Fixed height for collapsed item container */
+            justify-content: center; /* Center icon in collapsed state */
+            margin: 4px auto; /* Center the item itself horizontally */
+            border-radius: 28px; /* Fully rounded "pill" shape */
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #43484E; /* Material You On Surface Variant */
+            overflow: hidden;
+            text-decoration: none;
+        }
+        #nav-rail.expanded .nav-rail-item {
+            width: calc(100% - 32px); /* Full width minus padding when expanded */
+            margin: 4px 16px; /* Adjust margin for expanded state */
+            padding: 0 16px 0 12px; /* Padding for icon and text */
+            justify-content: flex-start; /* Align content to start */
+            height: 48px; /* Slightly smaller height for expanded items */
+            border-radius: 24px;
+        }
+
+        .nav-rail-item svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            transition: margin 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #nav-rail.expanded .nav-rail-item svg {
+            margin-right: 12px;
+        }
+
+        .nav-rail-item-label {
+            display: none;
+            white-space: nowrap;
+            font-weight: 500; /* Medium */
+            font-size: 0.875rem; /* 14px */
+            line-height: 1.25rem; /* 20px */
+            opacity: 0;
+            transition: opacity 0.15s ease-in-out 0.1s; /* Delay opacity transition */
+        }
+        #nav-rail.expanded .nav-rail-item-label {
+            display: inline;
+            opacity: 1;
+        }
+        .nav-rail-item:hover {
+            background-color: #e1e3e9; /* Slightly darker hover */
+        }
+        .nav-rail-item.active {
+            background-color: #d0e4ff; /* Material You Secondary Container color (example) */
+            color: #001d36; /* Material You On Secondary Container (example) */
+        }
+         #nav-rail.expanded .nav-rail-item.active {
+            /* Optionally different active style for expanded */
+        }
+
+
+        /* App content adjustments based on rail state */
+        #app-container {
+            transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 0; /* Ensure no extra space if header is part of #app */
+        }
+
+        @media (min-width: 768px) { /* md breakpoint (Tailwind's default) */
+            #nav-rail {
+                display: flex;
+            }
+            .nav-drawer-toggle-header { /* Hamburger in header for compact screens */
+                display: none;
+            }
+            /* Default margin for collapsed rail */
+            #app-container {
+                margin-left: 80px;
+            }
+            #app-container.rail-expanded {
+                margin-left: 256px;
+            }
+        }
+        @media (max-width: 767.98px) { /* Below md breakpoint */
+            #app-container {
+                margin-left: 0 !important; /* Ensure no margin from rail on small screens */
+            }
+            #nav-rail {
+                display: none !important; /* Ensure rail is hidden */
+            }
+        }
+
+        /* Custom Scrollbar Styles for Light Theme */
+        /* For Webkit-based browsers (Chrome, Safari, Edge) */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3f4f6; /* gray-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #9ca3af; /* gray-400 */
+            border-radius: 6px;
+            border: 3px solid #f3f4f6; /* Creates a padding effect */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #6b7280; /* gray-500 */
+        }
+
+        /* Embedded Tailwind CSS */
+        *,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,[type=button],[type=reset],[type=submit]{-webkit-appearance:button;background-color:transparent;background-image:none}img,svg,video,canvas,audio,iframe,embed,object{display:block;vertical-align:middle}
+        .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}@media (min-width:640px){.container{max-width:640px;padding-left:1.5rem;padding-right:1.5rem}}@media (min-width:1024px){.container{max-width:1024px;padding-left:2rem;padding-right:2rem}}@media (min-width:1280px){.container{max-width:1280px;padding-left:2.5rem;padding-right:2.5rem}}@media (min-width:1920px){.container{max-width:1920px;padding-left:3rem;padding-right:3rem}}
+        .antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+        .block{display:block}.inline-flex{display:inline-flex}.flex{display:flex}.grid{display:grid}
+        .h-5{height:1.25rem}.w-5{width:1.25rem}.w-12{width:3rem}.w-32{width:8rem}.w-48{width:12rem}.w-72{width:18rem}.w-full{width:100%}.w-\[8\%\]{width:8%}.w-\[10\%\]{width:10%}.w-\[12\%\]{width:12%}.w-\[14\%\]{width:14%}.w-\[15\%\]{width:15%}.w-\[17\%\]{width:17%}.w-\[19\%\]{width:19%}.w-\[20\%\]{width:20%}.w-\[25\%\]{width:25%}.min-w-full{min-width:100%}
+        .flex-1{flex:1 1 0%}
+        .transform{transform:translate(0,0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1)}
+        .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
+        .items-center{align-items:center}.items-end{align-items:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}
+        .gap-4{gap:1rem}.gap-x-8{column-gap:2rem}.gap-y-2{row-gap:.5rem}.gap-y-4{row-gap:1rem}
+        .space-x-8>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem*var(--tw-space-x-reverse));margin-left:calc(2rem*(1 - var(--tw-space-x-reverse)))}
+        .rounded-md{border-radius:.375rem}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-full{border-radius:9999px}
+        .border{border-width:1px}.border-2{border-width:2px}.border-transparent{border-color:transparent}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235/var(--tw-border-opacity))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219/var(--tw-border-opacity))}.border-gray-400{--tw-border-opacity:1;border-color:rgb(156 163 175/var(--tw-border-opacity))}.border-dashed{border-style:dashed}.border-t-2{border-top-width:2px}
+        .bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251/var(--tw-bg-opacity))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246/var(--tw-bg-opacity))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity))}
+        .p-1{padding:.25rem}.p-2{padding:.5rem}.p-4{padding:1rem}.p-8{padding:2rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pt-2{padding-top:.5rem}.pt-6{padding-top:1.5rem}
+        .text-left{text-align:left}.text-center{text-align:center}
+        .text-sm{font-size:.875rem;line-height:1.25rem}.text-base{font-size:1rem;line-height:1.5rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}
+        .font-medium{font-weight:500}.font-bold{font-weight:700}.font-semibold{font-weight:600}
+        .text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175/var(--tw-text-opacity))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128/var(--tw-text-opacity))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99/var(--tw-text-opacity))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81/var(--tw-text-opacity))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55/var(--tw-text-opacity))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39/var(--tw-text-opacity))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229/var(--tw-text-opacity))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38/var(--tw-text-opacity))}
+        .shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0/.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0/.1),0 4px 6px -4px rgb(0 0 0/.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}
+        .outline-none{outline:2px solid transparent;outline-offset:2px}
+        .transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}
+        .pointer-events-none{pointer-events:none}
+        .sticky{position:sticky}.top-0{top:0}
+        .z-20{z-index:20}
+        .mb-2{margin-bottom:.5rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.ml-2{margin-left:.5rem}.mr-2{margin-right:.5rem}.mt-1{margin-top:.25rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.mt-12{margin-top:3rem}.mt-16{margin-top:4rem}.mt-24{margin-top:6rem}
+        .flex-wrap{flex-wrap:wrap}.overflow-x-auto{overflow-x:auto}.align-middle{vertical-align:middle}.align-top{vertical-align:top}
+        .hover\:bg-gray-50:hover{--tw-bg-opacity:1;background-color:rgb(249 250 251/var(--tw-bg-opacity))}.hover\:bg-red-100:hover{--tw-bg-opacity:1;background-color:rgb(254 226 226/var(--tw-bg-opacity))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202/var(--tw-bg-opacity))}
+        .hover\:text-red-600:hover{--tw-text-opacity:1;color:rgb(220 38 38/var(--tw-text-opacity))}
+        .focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}
+        .focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}
+        .focus\:ring-offset-2:focus{--tw-ring-offset-width:2px}
+        .focus\:border-indigo-500:focus{--tw-border-opacity:1;border-color:rgb(99 102 241/var(--tw-border-opacity))}
+        .focus\:ring-indigo-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(99 102 241/var(--tw-ring-opacity))}
+        .disabled\:cursor-not-allowed:disabled{cursor:not-allowed}
+        .disabled\:bg-indigo-300:disabled{--tw-bg-opacity:1;background-color:rgb(165 180 252/var(--tw-bg-opacity))}
+        @media (min-width:640px){.sm\:text-sm{font-size:.875rem;line-height:1.25rem}}
+        @media (min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+        /* Original & Print Styles */
+        @page {
+            size: A4;
+            margin: 0.2in;
+        }
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100%;
+                background: white !important;
+                font-size: 8pt;
+                color: black;
+            }
+            main.container {
+                width: 100% !important;
+                max-width: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #print-container {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box;
+                background: white !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+            #print-container .bg-gray-100, #print-container .bg-gray-50 {
+                background-color: #f3f4f6 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-break-inside-avoid {
+                break-inside: avoid;
+            }
+            #print-container .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+            #print-container input,
+            #print-container textarea,
+            #print-container select {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                color: black !important;
+                padding: 2px 0 !important;
+                margin: 0 !important;
+                font-size: 8pt !important;
+                line-height: 1.2 !important;
+                width: 100%;
+                height: auto !important;
+                min-height: 12pt;
+                overflow: visible !important;
+                resize: none !important;
+                vertical-align: middle;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+            #print-container textarea {
+                display: block;
+            }
+            #print-container select {
+                padding-right: 0 !important;
+            }
+            #print-container input[type="checkbox"] {
+                width: 10pt;
+                height: 10pt;
+                border: 1px solid black !important;
+                position: relative;
+                display: inline-block;
+                vertical-align: middle;
+                background: white !important;
+                padding: 0 !important;
+            }
+            #print-container input[type="checkbox"]:checked::before {
+                content: '✓';
+                font-size: 7pt;
+                color: black;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #print-container table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            #print-container th,
+            #print-container td {
+                border: 1px solid #ccc !important;
+                padding: 3pt !important;
+                vertical-align: middle;
+            }
+            #print-container .border-t-2.border-dashed.border-gray-200 {
+                border-top: 1px dashed #ccc !important;
+            }
+            .signature-section {
+                margin-top: 36pt;
+            }
+            .signature-section .border-t-2 {
+                border-top: 1px solid #4b5563 !important;
+            }
+            h1 {
+                font-size: 16pt !important;
+                margin-bottom: 12pt !important;
+            }
+            h2 {
+                font-size: 12pt !important;
+                margin-bottom: 6pt !important;
+            }
+        }
+        .loader {
+            transform: rotate(0deg);
+            animation: rotate 1s linear infinite;
+        }
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <div class="mobile-menu-overlay" aria-hidden="true" tabindex="-1"></div>
+
+        <header class="site-header">
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" aria-label="Open menu">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <a href="/" class="site-logo">ValleyHub Docs</a>
+                    <div class="header-version-selector">
+                        <span>Version: v1</span>
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="header-search">
+                    <input type="text" placeholder="Search">
+                    <button class="search-button" aria-label="Search">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="header-right">
+                    <div class="settings-container">
+                        <button class="settings-toggle" aria-label="Open settings menu" aria-haspopup="true" aria-expanded="false">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.44,0.17-0.48,0.41L9.18,5.18C8.59,5.42,8.06,5.74,7.56,6.12L5.17,5.16C4.95,5.09,4.7,5.16,4.59,5.38L2.67,8.7 c-0.11,0.2-0.06,0.47,0.12,0.61l2.03,1.58C4.78,11.36,4.76,11.68,4.76,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.43,2.37 c0.04,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17-0.48,0.41l0.43-2.37c0.59-0.24,1.12-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0.01,0.59-0.22l1.92-3.32c0.11-0.2,0.06-0.47-0.12-0.61L19.14,12.94z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                        <div class="settings-dropdown" hidden>
+                            <div class="dropdown-section">
+                                <span class="dropdown-title">Theme</span>
+                                <ul class="theme-options">
+                                    <li><button class="theme-option" data-theme-value="light">Light</button></li>
+                                    <li><button class="theme-option" data-theme-value="dark">Dark</button></li>
+                                    <li><button class="theme-option" data-theme-value="system">System</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <a href="#" class="sidebar-link active">
+                        <span class="active-arrow"></span>
+                        Home
+                    </a>
+                    <div class="sidebar-search">
+                        <input type="text" placeholder="Filter pages...">
+                        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="sidebar-divider"></div>
+
+                <nav class="sidebar-nav">
+                    <h4 class="sidebar-category-title">Applications</h4>
+                    <ul>
+                        <li><a href="#" class="sidebar-link" id="nav-home">Home</a></li>
+                        <li><a href="#" class="sidebar-link" id="nav-afinder">Account Finder</a></li>
+                        <li><a href="#" class="sidebar-link" id="nav-sales-log">Daily Sales Log</a></li>
+                    </ul>
+
+
+
+                    <h4 class="sidebar-category-title">Quickstart</h4>
+                    <ul>
+                        <li class="sidebar-section">
+                            <details>
+                                <summary class="sidebar-section-title">Get started</summary>
+                                <ul class="sidebar-subsection-list">
+                                    <li><a href="#" class="sidebar-link">What is ValleyHub Pages?</a></li>
+                                    <li><a href="#" class="sidebar-link">Create a ValleyHub Pages site</a></li>
+                                    <li><a href="#" class="sidebar-link">ValleyHub Pages limits</a></li>
+                                    <li><a href="#" class="sidebar-link">Use custom workflows</a></li>
+                                    <li><a href="#" class="sidebar-link">Configure publishing source</a></li>
+                                    <li><a href="#" class="sidebar-link">Delete a ValleyHub Pages site</a></li>
+                                    <li><a href="#" class="sidebar-link">Unpublish Pages site</a></li>
+                                    <li><a href="#" class="sidebar-link">Create custom 404 page</a></li>
+                                    <li><a href="#" class="sidebar-link">Secure site with HTTPS</a></li>
+                                    <li><a href="#" class="sidebar-link">Use submodules with Pages</a></li>
+                                    <li><a href="#" class="sidebar-link">Troubleshoot 404 errors</a></li>
+                                    <li><a href="#" class="sidebar-link">Set up site with Jekyll</a></li>
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+
+                    <h4 class="sidebar-category-title">Set up site with Jekyll</h4>
+                    <ul>
+                        <li class="sidebar-section">
+                            <details>
+                                <summary class="sidebar-section-title">ValleyHub Pages & Jekyll</summary>
+                                <ul class="sidebar-subsection-list">
+                                    <li><a href="#" class="sidebar-link">Create site with Jekyll</a></li>
+                                    <li><a href="#" class="sidebar-link">Test site locally with Jekyll</a></li>
+                                    <li><a href="#" class="sidebar-link">Add content to Pages site</a></li>
+                                    <li><a href="#" class="sidebar-link">Set Markdown processor</a></li>
+                                    <li><a href="#" class="sidebar-link">Add theme to Pages site</a></li>
+                                    <li><a href="#" class="sidebar-link">Jekyll build errors for Pages</a></li>
+                                    <li><a href="#" class="sidebar-link">Troubleshoot Jekyll errors</a></li>
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+
+                    <h4 class="sidebar-category-title">Configure a custom domain</h4>
+                    <ul>
+                        <li class="sidebar-section">
+                            <details>
+                                <summary class="sidebar-section-title">Custom domain setup</summary>
+                                <ul class="sidebar-subsection-list">
+                                    <li><a href="#" class="sidebar-link">About custom domains</a></li>
+                                    <li><a href="#" class="sidebar-link">Setting up a custom domain</a></li>
+                                    <li><a href="#" class="sidebar-link">Troubleshooting custom domains</a></li>
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="main-content">
+                <div id="vindex-content">
+                    <h1 id="welcome-to-my-docs">Welcome to My Docs!</h1>
+                <p>This is where your main documentation content will be placed. You can add headings, paragraphs, code blocks, images, and more. The layout on the left now reflects the ValleyHub Docs style, with a structured sidebar including categories, collapsible sections, and an active link indicator.</p>
+                <p>The aim is to provide a comprehensive and easy-to-navigate resource for all users, from beginners to advanced developers. We believe that clear and well-organized documentation is key to a productive experience.</p>
+
+                <h2 id="getting-started">Getting Started</h2>
+                <p>Explore the sidebar to navigate through different sections of the documentation. Each section can be expanded or collapsed to reveal its contents. Starting with the quickstart guide is highly recommended for new users.</p>
+                <p>We've designed the content to be modular, allowing you to jump directly to topics of interest without having to read through irrelevant sections. Use the search bar in the header for quick access to specific keywords or phrases.</p>
+
+                <h3 id="installation-guide">Installation Guide</h3>
+                <p>Follow these steps to get your project up and running. Ensure you have all prerequisites installed before proceeding. Detailed instructions are provided for various operating systems.</p>
+                <ul>
+                    <li>Step 1: Download the necessary files.</li>
+                    <li>Step 2: Configure your environment variables.</li>
+                    <li>Step 3: Run the initial setup script.</li>
+                </ul>
+
+                <h3 id="code-example">Code Example</h3>
+                <pre><code>function greet(name) {
+                    console.log(`Hello, ${name}!`);
+                }
+
+                // Example usage of the greet function
+                greet('World');
+
+                // Another example with a different name
+                greet('ValleyHub Docs User');
+                </code></pre>
+                <p>Code blocks are formatted for readability and can be easily copied. Pay attention to syntax highlighting for different languages.</p>
+
+                <h2 id="advanced-topics">Advanced Topics</h2>
+                <p>Here are some more advanced topics you might want to explore. These sections delve deeper into specific functionalities and configurations that might be useful for experienced users.</p>
+
+                <h3 id="custom-workflows">Custom Workflows</h3>
+                <p>Learn how to create and manage custom workflows for your ValleyHub Pages site. This includes setting up CI/CD pipelines and automating deployment processes.</p>
+                <p>You can define custom actions and triggers to perfectly fit your project's needs. This level of customization offers significant flexibility for complex setups.</p>
+
+                <h3 id="api-integration">API Integration</h3>
+                <p>Integrating with external APIs is a common requirement for dynamic sites. This section covers best practices and examples for secure API calls.</p>
+                <p>Topics include authentication methods, handling API responses, and error management. We also provide examples for popular third-party services.</p>
+
+                <h3 id="performance-optimization">Performance Optimization</h3>
+                <p>Tips and tricks to optimize the performance of your documentation site, ensuring fast load times and a smooth user experience. This includes image optimization, caching strategies, and minification techniques.</p>
+                <p>Improving site performance not only enhances user satisfaction but also positively impacts SEO. Every millisecond counts for a seamless Browse experience.</p>
+
+                <h2 id="troubleshooting-guide">Troubleshooting Guide</h2>
+                <p>A comprehensive guide to common issues and their solutions. Before submitting a new issue, please consult this section.</p>
+                <p>Topics range from setup errors to deployment failures. Each problem is accompanied by potential causes and detailed steps for resolution. We continually update this guide based on user feedback and common support queries.</p>
+
+                <h3 id="common-errors">Common Errors</h3>
+                <p>A list of frequently encountered errors and how to resolve them quickly.</p>
+                <h3 id="debugging-tips">Debugging Tips</h3>
+                <p>Strategies and tools to help you debug your site effectively.</p>
+
+                <h2 id="faq">Frequently Asked Questions</h2>
+                <p>Find answers to common questions about setting up and maintaining your documentation site. This section is designed to quickly address typical queries.</p>
+                <p>If you don't find your answer here, feel free to reach out to our support team or browse the community forums. We're here to help!</p>
+
+                <a href="YOUR_ValleyHub_EDIT_URL_HERE" class="edit-page-link" target="_blank">
+                    Edit this page.
+                </a>
+                <br>   <br>   <br>
+                <h1 id="client-relationship-builder">CLIENT RELATIONSHIP BUILDER</h1>
+                <p>Explore the sidebar to navigate through different sections of the documentation. Each section can be expanded or collapsed to reveal its contents. Starting with the quickstart guide is highly recommended for new users.</p>
+                <p>We've designed the content to be modular, allowing you to jump directly to topics of interest without having to read through irrelevant sections. Use the search bar in the header for quick access to specific keywords or phrases.</p>
+
+
+
+                <div class="recommendation-tool-container">
+                    <h3>Find Your Perfect Product</h3>
+                    <p>Answer a few questions and we'll recommend the best product for you.</p>
+                    <form id="recommendation-form">
+                        <div class="form-group">
+                            <label for="business-type">What type of business do you operate?</label>
+                            <input type="text" id="business-type" name="business-type" placeholder="e.g., Retail, Service, Non-Profit" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="location-type">How many business locations do you have?</label>
+                            <select id="location-type" name="location-type" class="form-control">
+                                <option value="single">One Location</option>
+                                <option value="multiple">Multiple Stores/Locations</option>
+                                <option value="online">Online Only</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="monthly-balance">What is your average monthly balance?</label>
+                            <input type="number" id="monthly-balance" name="monthly-balance" placeholder="e.g., 25000" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="transaction-volume">What is your estimated monthly transaction volume?</label>
+                            <input type="number" id="transaction-volume" name="transaction-volume" placeholder="e.g., 500" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="cash-deposits">How much cash do you deposit monthly?</label>
+                            <input type="number" id="cash-deposits" name="cash-deposits" placeholder="e.g., 10000" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>What types of payments do you process?</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="payment-types" value="customer"> Customer Payments (In-person/Online)</label>
+                                <label><input type="checkbox" name="payment-types" value="payroll"> Employee Payroll</label>
+                                <label><input type="checkbox" name="payment-types" value="vendor"> Vendor Payments</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="wire-usage">How frequently do you use wire transfers?</label>
+                            <select id="wire-usage" name="wire-usage" class="form-control">
+                                <option value="none">Rarely or Never</option>
+                                <option value="domestic">Frequently for Domestic</option>
+                                <option value="international">Frequently for International</option>
+                                <option value="both">Frequently for Both Domestic & International</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Which features are critical for your business?</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="features" value="online-banking"> Comprehensive Online Banking</label>
+                                <label><input type="checkbox" name="features" value="mobile-deposit"> Frequent Mobile Deposits</label>
+                                <label><input type="checkbox" name="features" value="fraud-protection"> Advanced Fraud Protection</label>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-reset">Reset</button>
+                            <button type="submit" class="btn-submit">Get Recommendation</button>
+                        </div>
+                    </form>
+                    <div id="recommendation-result" class="recommendation-result" style="display: none;">
+                        <h4>Our Recommendation For You:</h4>
+                        <p id="result-text"></p>
+                    </div>
+                </div>
+                </div>
+                <div id="afinder-content" style="display: none;">
+                    <div class="recommendation-tool-container">
+                        <h3 id="afinder-title">Account Finder</h3>
+                        <p>Select the product details to calculate the points.</p>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" class="form-control">
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subCategory">Sub-Category</label>
+                            <select id="subCategory" class="form-control">
+                                <option value="">Select Sub-Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="group">Group</label>
+                            <select id="group" class="form-control">
+                                <option value="">Select Group</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productName">Product Name</label>
+                            <select id="productName" class="form-control">
+                                <option value="">Select Product Name</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="balance-group" style="display: none;">
+                            <label for="balance">Balance</label>
+                            <input type="number" id="balance" placeholder="Enter balance" class="form-control">
+                        </div>
+                        <div class="form-actions">
+                            <button id="reset" type="button" class="btn-reset">Reset</button>
+                            <button id="calculate" type="button" class="btn-submit">Calculate</button>
+                        </div>
+                        <div id="result" class="recommendation-result" style="display: none;">
+                            <h4>Calculated Points:</h4>
+                            <p><span id="points" class="font-bold text-xl">0</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="sales-log-content" style="display: none;">
+                    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+                        <div class="p-8 bg-white rounded-xl shadow-lg" id="print-container">
+                            <h1 class="text-3xl font-bold text-center text-gray-900 mb-8" id="sales-log-title-main">
+                                Daily Sales Activity Log
+                            </h1>
+                            <h2 id="sales-log-header-info">Header Information</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-8">
+                                <div class="flex items-center">
+                                    <label for="company-region" class="w-32 text-sm font-medium text-gray-700">Company/Region:</label>
+                                    <input type="text" id="company-region" placeholder="Enter region..." class="text-gray-900 flex-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="sales-manager" class="w-32 text-sm font-medium text-gray-700">Sales Manager:</label>
+                                    <input type="text" id="sales-manager" placeholder="Enter manager name..." class="text-gray-900 flex-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="date" class="w-32 text-sm font-medium text-gray-700">Date:</label>
+                                    <input type="date" id="date" value="" class="text-gray-900 flex-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                </div>
+                                <div class="flex items-center">
+                                    <label for="department" class="w-32 text-sm font-medium text-gray-700">Department:</label>
+                                    <input type="text" id="department" placeholder="Enter department..." class="text-gray-900 flex-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                </div>
+                            </div>
+
+                            <!-- Call Log Section -->
+                            <section id="call-log-section" class="mt-8 pt-6 border-t-2 border-dashed border-gray-200 print-break-inside-avoid">
+                            </section>
+
+                            <!-- Email Log Section -->
+                            <section id="email-log-section" class="mt-8 pt-6 border-t-2 border-dashed border-gray-200 print-break-inside-avoid">
+                            </section>
+
+                            <!-- Meeting Log Section -->
+                            <section id="meeting-log-section" class="mt-8 pt-6 border-t-2 border-dashed border-gray-200 print-break-inside-avoid">
+                            </section>
+
+                            <!-- Metrics -->
+                            <section id="metrics-section" class="mt-24 pt-6 border-t-2 border-dashed border-gray-200 print-break-inside-avoid">
+                            </section>
+
+                            <div class="mt-8 pt-6 print-break-inside-avoid">
+                                <div>
+                                    <label for="general-notes" class="block text-sm font-medium text-gray-700">General Notes / Challenges / Support Needed:</label>
+                                    <textarea id="general-notes" rows="4" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md text-gray-900 bg-white"></textarea>
+                                </div>
+                            </div>
+                            <div class="signature-section print-break-inside-avoid mt-24 flex justify-between items-end">
+                                <div>
+                                    <div class="border-t-2 border-gray-400 w-72"></div>
+                                    <p class="text-sm text-gray-600 pt-2">Sales Manager Signature</p>
+                                </div>
+                                <div>
+                                    <div class="border-t-2 border-gray-400 w-48"></div>
+                                    <p class="text-sm text-gray-600 pt-2">Date</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 flex justify-center items-center gap-4 no-print">
+                            <button id="print-blank-btn" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                Print Blank Template
+                            </button>
+                            <button id="save-pdf-btn" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-colors">
+                                <span id="save-pdf-btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                </span>
+                                <span id="save-pdf-btn-text">Print / Save as PDF</span>
+                            </button>
+                        </div>
+                    </main>
+                </div>
+            </main>
+
+            <aside class="toc-container">
+                <nav class="toc-nav">
+                    <h4 class="toc-title">On This Page</h4>
+                    <ul id="toc-list">
+                        </ul>
+                    <div class="toc-meta">
+                        <a href="#" class="toc-meta-link">Edit this page</a>
+                        <a href="#app-container" class="toc-meta-link scroll-to-top">
+                            Scroll to top
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+        </div>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>© 2025 My Custom Docs Site. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <script src="product_data.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
