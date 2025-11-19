@@ -8,9 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const navHome = document.getElementById('nav-home');
     const navAfinder = document.getElementById('nav-afinder');
     const navSalesLog = document.getElementById('nav-sales-log');
+    const navBcard = document.getElementById('nav-bcard');
     const vindexContent = document.getElementById('vindex-content');
     const afinderContent = document.getElementById('afinder-content');
     const salesLogContent = document.getElementById('sales-log-content');
+    const bcardContent = document.getElementById('bcard-content');
     const sidebarLinks = document.querySelectorAll('.sidebar-nav .sidebar-link');
     const mainContent = document.querySelector('.main-content');
     const tocList = document.getElementById('toc-list');
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (vindexContent) vindexContent.style.display = 'none';
         if (afinderContent) afinderContent.style.display = 'none';
         if (salesLogContent) salesLogContent.style.display = 'none';
+        if (bcardContent) bcardContent.style.display = 'none';
     }
 
     function updateActiveLink(activeLink) {
@@ -698,6 +701,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateActiveLink(navSalesLog);
         initSalesLog();
         generateTOC('#sales-log-content');
+    });
+
+    navBcard?.addEventListener('click', (e) => {
+        e.preventDefault();
+        hideAllContent();
+        if (bcardContent) bcardContent.style.display = 'block';
+        updateActiveLink(navBcard);
+        generateTOC('#bcard-content');
     });
 
     // --- Initial Application State ---

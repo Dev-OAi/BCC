@@ -1,0 +1,99 @@
+<div id="pdf-templates-column" class="form-column" style="display: none">
+    <h2>PDF Templates</h2>
+    <p>Upload a PDF form to dynamically generate fields and fill it out.</p>
+    <input type="file" id="pdf-upload" accept=".pdf" />
+    <button id="process-pdf-btn">Process PDF</button>
+    <canvas id="pdf-preview" style="max-width: 100%; margin-top: 10px"></canvas>
+    <form id="dynamic-form"></form>
+</div>
+<div id="product-finder-column" class="form-column" style="display: none;">
+    <h2>CLIENT RELATIONSHIP BUILDER</h2>
+    <p>Find your perfect product.</p>
+    <form id="product-finder-form">
+        <fieldset>
+            <legend>Product Finder</legend>
+            <div class="tooltip">
+                <label for="business-type-select">Type of Business</label>
+                <select id="business-type-select" name="business-type-select">
+                    <option value="retail">Retail</option>
+                    <option value="service">Service</option>
+                    <option value="manufacturing">Manufacturing</option>
+                </select>
+            </div>
+            <div class="tooltip">
+                <label for="business-revenue">Annual Revenue</label>
+                <input type="number" id="business-revenue" name="business-revenue" />
+            </div>
+            <div class="tooltip">
+                <label for="transaction-volume">Monthly Transaction Volume</label>
+                <input type="number" id="transaction-volume" name="transaction-volume" />
+            </div>
+            <button type="button" id="find-product-btn">Find Product</button>
+        </fieldset>
+    </form>
+    <div id="product-recommendation"></div>
+</div>
+<div id="account-finder-column" class="form-column" style="display: none;">
+    <h2>Account Finder</h2>
+    <p>Browse our products and their features.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Features</th>
+                <th>Points per Dollar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Platinum Business Suite</td>
+                <td>Travel Insurance, Airport Lounge Access, Concierge Service</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Gold Business Package</td>
+                <td>Cash Back, Extended Warranty</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Silver Business Essentials</td>
+                <td>No Annual Fee, Basic Rewards</td>
+                <td>1</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="point-grid-column" class="form-column" style="display: none;">
+    <h2>Retail Banking - Point Grid</h2>
+    <div id="point-grid-container"></div>
+</div>
+<div id="sales-log-content" class="form-column" style="display: none;">
+    <h2>Daily Sales Activity Log</h2>
+    <form id="sales-log-form">
+        <fieldset>
+            <legend>Log an Activity</legend>
+            <div class="tooltip">
+                <label for="activity-type">Activity Type</label>
+                <select id="activity-type" name="activity-type">
+                    <option value="call">Call</option>
+                    <option value="email">Email</option>
+                    <option value="meeting">Meeting</option>
+                </select>
+            </div>
+            <div class="tooltip">
+                <label for="client-name">Client Name</label>
+                <input type="text" id="client-name" name="client-name" />
+            </div>
+            <div class="tooltip">
+                <label for="notes">Notes</label>
+                <textarea id="notes" name="notes" rows="4"></textarea>
+            </div>
+            <button type="button" id="log-activity-btn">Log Activity</button>
+        </fieldset>
+    </form>
+    <div id="sales-log-display"></div>
+</div>
+<div id="afinder-content" class="form-column" style="display: none;">
+    <h2>Account Finder</h2>
+    <div id="afinder-table"></div>
+</div>
